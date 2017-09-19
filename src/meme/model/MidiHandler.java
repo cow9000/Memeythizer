@@ -1,10 +1,15 @@
 package meme.model;
 
-import java.util.List;
-import java.io.*;
-import javax.sound.midi.*;
+import java.util.ArrayList;
+
+import javax.sound.midi.MidiDevice;
 
 public class MidiHandler
 {
-
+	private ArrayList<MidiDevice> devices = new ArrayList<MidiDevice>();
+	
+	public MidiHandler() {
+		
+	}
+	
 }
