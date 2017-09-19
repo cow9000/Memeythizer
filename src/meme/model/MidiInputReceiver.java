@@ -15,8 +15,11 @@ public class MidiInputReceiver implements Receiver
 	@Override
 	public void send(MidiMessage message, long timeStamp)
 	{
+		//message.getMessage()
 		// TODO Auto-generated method stub
 		System.out.println(message.toString());
+		
+		//Use MidiMessage to translate keys to sound.
 	}
 
 	@Override
