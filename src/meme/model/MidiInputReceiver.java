@@ -18,6 +18,9 @@ public class MidiInputReceiver implements Receiver
 		//message.getMessage()
 		// TODO Auto-generated method stub
 		System.out.println(message.toString());
+		//http://www.music-software-development.com/midi-tutorial.html
+		//Use this link to get data.
+		
 		
 		//Use MidiMessage to translate keys to sound.
 	}
