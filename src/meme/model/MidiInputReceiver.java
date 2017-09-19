@@ -16,7 +16,7 @@ public class MidiInputReceiver implements Receiver
 	public void send(MidiMessage message, long timeStamp)
 	{
 		// TODO Auto-generated method stub
-		
+		System.out.println(message.toString());
 	}
 
 	@Override
