@@ -28,9 +28,15 @@ public class MidiInputReceiver implements Receiver
 		if(message.getLength() > 1) {
 			//If the array is empty, it is a key press
 			if(Keys.isEmpty()) {
-				Keys.add(new Key(keyByte));
+				
+				Key pressedKey = new Key(keyByte);
+				
+				pressedKey.playKey();
+				
+				Keys.add(pressedKey);
 				System.out.print("Key pressed (");
 				System.out.printf("%02X)\n", keyByte);
+				
 			}
 			//Otherwise it must either be a key press or a key release
 			else {
