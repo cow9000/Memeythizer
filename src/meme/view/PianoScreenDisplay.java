@@ -20,6 +20,7 @@ public class PianoScreenDisplay extends JFrame
 		
 		setTitle(TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		display();
 		
 		
@@ -32,6 +33,7 @@ public class PianoScreenDisplay extends JFrame
 		pack();
 		
 		setMinimumSize(getSize());
+		setSize(getPreferredSize());
 		setVisible(true);
 	}
 	
@@ -45,11 +47,11 @@ class CustomComponents extends JComponent{
 	
 	@Override
 	public Dimension getMinimumSize() {
-		return new Dimension(400,400);
+		return new Dimension(600,600);
 	}
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(480,640);
+		return new Dimension(640,640);
 	}
 	
 	@Override
@@ -61,14 +63,25 @@ class CustomComponents extends JComponent{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Dimension windowSize = getSize();
-		//windowSize.getWidth();
 		
 		//We need to piant 88 keys to the piano
 		//Based on the window size and height, draw them according to size of window.
 		
 		double increaseXAmount = (windowSize.getWidth()/88);
 		boolean testColor = false;
+		
 		for(int i = 0; i < 89; i++) {
+			
+			//divide i by twelve, based on that calculate if it is a # or a normal key.
+			int keyType = i;
+			if(i > 12) {
+				keyType = i%12;
+				
+			}
+			
+			
+			//Now based on keyType that will determine if it is a # or a normal key 
+			
 			testColor = !testColor;
 			if(testColor) {
 				g.setColor(Color.WHITE);
@@ -81,8 +94,8 @@ class CustomComponents extends JComponent{
 			
 			g.fillRect((int)(increaseXAmount * (i - 1)), (int) (windowSize.getHeight() - keyHeight + 64), (int)increaseXAmount, keyHeight);
 			g.setColor(Color.RED);
-			g.drawString(Integer.toString(i),(int)(increaseXAmount * (i - 1)), (int)Math.floor(windowSize.getHeight()*.75));
-			//g.drawRect(i*10, i*10, 10, 10);
+
+		
 		}
 	}
 	
