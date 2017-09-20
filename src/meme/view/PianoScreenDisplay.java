@@ -1,5 +1,7 @@
 package meme.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
@@ -19,7 +21,17 @@ public class PianoScreenDisplay extends JFrame
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.drawRect(0, 0, 100, 100);
+		
+		Dimension windowSize = getContentPane().getSize();
+		//windowSize.getWidth();
+		
+		//We need to piant 88 keys to the piano
+		//Based on the window size and height, draw them according to size of window.
+		for(int i = 0; i < 88; i++) {
+			g.setColor(Color.WHITE);
+			g.fillRect(10, i*10, 10, 10);
+			//g.drawRect(i*10, i*10, 10, 10);
+		}
 	}
 	
 	
