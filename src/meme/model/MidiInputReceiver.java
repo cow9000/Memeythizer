@@ -15,6 +15,7 @@ public class MidiInputReceiver implements Receiver
 	
 	public MidiInputReceiver(String name) {
 		this.name = name;
+		
 	}
 
 	@Override
