@@ -1,6 +1,7 @@
 package meme.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.midi.MidiMessage;
@@ -10,8 +11,7 @@ public class MidiInputReceiver implements Receiver
 {
 	
 	private String name;
-	private int number;
-	private List<Byte> KeysOn = new ArrayList<Byte>();
+	private List<Key> Keys = new ArrayList<Key>();
 	
 	public MidiInputReceiver(String name) {
 		this.name = name;
@@ -20,40 +20,61 @@ public class MidiInputReceiver implements Receiver
 	@Override
 	public void send(MidiMessage message, long timeStamp)
 	{
-		//message.getMessage()
-		//https://www.midi.org/specifications/item/table-1-summary-of-midi-message
-		// TODO Auto-generated method stub
 		
-		byte keyByte = message.getMessage()[1];
+		//Get message data
+		Byte keyByte = message.getMessage()[1];
 		
+		//Check if message is a valid key press
 		if(message.getLength() > 1) {
-			if(KeysOn.contains(keyByte)) {
-				//key has been released.				
-				
-				for(int i = 0; i < KeysOn.size(); i++) {
-					if(KeysOn.get(i).equals(keyByte)) {
-						KeysOn.remove(i);
-						System.out.println("Key Released");
+			//If the array is empty, it is a key press
+			if(Keys.isEmpty()) {
+				Keys.add(new Key(keyByte));
+				System.out.println("Key pressed");
+			}
+			//Otherwise it must either be a key press or a key release
+			else {
+				boolean keyPressed = true;
+				//For loop to loop through Keys array and check if 
+				for(int i = 0; i < Keys.size(); i++) {
+					if(keyByte.equals(Keys.get(i).getKeyType())) {
+						//This is a key release
+						keyPressed = false;
 						break;
 					}
 				}
+				//Then after we know if it is a key press or a key release do this.
+				if(keyPressed) {
+					
+					Key pressedKey = new Key(keyByte);
+					
+					//Play the sound of the pressed key
+					//pressedKey.play();
+					
+					Keys.add(pressedKey);
+					
+					//Here calculate the key Frequency and then 
+					
+					System.out.println("Key pressed");
+				}else {
+					System.out.println("Key released");
+					for(int i = 0; i < Keys.size(); i++) {
+						if(keyByte.equals(Keys.get(i).getKeyType())) {
+							
+							//Stop sound from playing and then remove the key from array.
+							
+							//Keys.get(i).stop();
+							
+							Keys.remove(i);
+							break;
+							
+						}
+					}
+				}
 				
-			}else {
-				//Key has been pressed
-				KeysOn.add(keyByte);
-				System.out.println("Key pressed");
 			}
 			
-			//System.out.printf("%02X\n", message.getMessage()[1]);
-			
-			number = 1;
-			//System.out.println(message.getMessage());
 		}
-		//http://www.music-software-development.com/midi-tutorial.html
-		//Use this link to get data.
 		
-		
-		//Use MidiMessage to translate keys to sound.
 	}
 
 	@Override
