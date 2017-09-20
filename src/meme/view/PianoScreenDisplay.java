@@ -38,7 +38,10 @@ public class PianoScreenDisplay extends JFrame
 				
 				g.setColor(Color.BLACK);
 			}
-			g.fillRect((int)(increaseXAmount * (i - 1)), (int)Math.floor(windowSize.getHeight()*.75), (int)increaseXAmount, (int)Math.floor(windowSize.getHeight()*.5));
+			
+			int keyHeight = (int)Math.floor(windowSize.getHeight()*.9);
+			
+			g.fillRect((int)(increaseXAmount * (i - 1)), (int) (windowSize.getHeight() - keyHeight), (int)increaseXAmount, keyHeight);
 			g.setColor(Color.RED);
 			g.drawString(Integer.toString(i),(int)(increaseXAmount * (i - 1)), (int)Math.floor(windowSize.getHeight()*.75));
 			//g.drawRect(i*10, i*10, 10, 10);
