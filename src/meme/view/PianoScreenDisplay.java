@@ -30,7 +30,7 @@ public class PianoScreenDisplay extends JFrame
 		
 		double increaseXAmount = (windowSize.getWidth()/88);
 		boolean testColor = false;
-		for(int i = 0; i < 88; i++) {
+		for(int i = 0; i < 89; i++) {
 			testColor = !testColor;
 			if(testColor) {
 				g.setColor(Color.WHITE);
@@ -38,7 +38,9 @@ public class PianoScreenDisplay extends JFrame
 				
 				g.setColor(Color.BLACK);
 			}
-			g.fillRect((int)(increaseXAmount * (i - 1)), (int)Math.floor(windowSize.getHeight()*.75), (int)(increaseXAmount * i), (int)Math.floor(windowSize.getHeight()*.5));
+			g.fillRect((int)(increaseXAmount * (i - 1)), (int)Math.floor(windowSize.getHeight()*.75), (int)increaseXAmount, (int)Math.floor(windowSize.getHeight()*.5));
+			g.setColor(Color.RED);
+			g.drawString(Integer.toString(i),(int)(increaseXAmount * (i - 1)), (int)Math.floor(windowSize.getHeight()*.75));
 			//g.drawRect(i*10, i*10, 10, 10);
 		}
 	}
