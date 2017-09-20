@@ -29,7 +29,8 @@ public class MidiInputReceiver implements Receiver
 			//If the array is empty, it is a key press
 			if(Keys.isEmpty()) {
 				Keys.add(new Key(keyByte));
-				System.out.println("Key pressed");
+				System.out.print("Key pressed (");
+				System.out.printf("%02X)\n", keyByte);
 			}
 			//Otherwise it must either be a key press or a key release
 			else {
@@ -54,7 +55,10 @@ public class MidiInputReceiver implements Receiver
 					
 					//Here calculate the key Frequency and then 
 					
-					System.out.println("Key pressed");
+					
+					System.out.print("Key pressed (");
+					System.out.printf("%02X)\n", keyByte);
+					
 				}else {
 					System.out.println("Key released");
 					for(int i = 0; i < Keys.size(); i++) {
