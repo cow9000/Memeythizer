@@ -14,6 +14,7 @@ public class PianoScreenDisplay extends JFrame
 	public PianoScreenDisplay(){
 		setSize(640,480);
 		setTitle(TITLE);
+		getContentPane().setBackground( Color.BLACK );
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
@@ -36,7 +37,7 @@ public class PianoScreenDisplay extends JFrame
 				g.setColor(Color.WHITE);
 			}else {
 				
-				g.setColor(Color.BLACK);
+				g.setColor(Color.GRAY);
 			}
 			
 			int keyHeight = (int)Math.floor(windowSize.getHeight()*.6);
