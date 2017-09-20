@@ -31,7 +31,7 @@ public class Key {
 		// A1 is 440Hz
 
 		try {
-			audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("/sounds/greenscreen-wow.mp3"));
+			audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			clip.start();

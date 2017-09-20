@@ -54,8 +54,11 @@ public class MidiInputReceiver implements Receiver
 					
 					Key pressedKey = new Key(keyByte);
 					
+					
 					//Play the sound of the pressed key
 					//pressedKey.play();
+					
+					pressedKey.playKey();
 					
 					Keys.add(pressedKey);
 					
