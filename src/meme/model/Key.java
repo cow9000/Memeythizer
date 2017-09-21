@@ -21,17 +21,17 @@ public class Key {
 	private AudioInputStream audioInputStream;
 	private Clip clip;
 
-	private double frequency;
 
 	public Key(byte keyType) {
 		this.keyType = keyType;
 	}
 
 	//FROM http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
-	private AudioFormat getOutFormat(AudioFormat inFormat) {
+	private AudioFormat getOutFormat(AudioFormat inFormat, int frequency) {
 		int ch = inFormat.getChannels();
 		float rate = inFormat.getSampleRate();	
-		return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 72000, 16, ch, ch * 2, rate,
+		int sampleSize = frequency;
+		return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sampleSize, 16, ch, ch * 2, rate,
 				inFormat.isBigEndian());
 	}
 	
@@ -57,7 +57,7 @@ public class Key {
 			
 			audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
 			
-			AudioFormat inFormat = getOutFormat(audioInputStream.getFormat());
+			AudioFormat inFormat = getOutFormat(audioInputStream.getFormat(),1000);
 			
 			AudioInputStream in2 = AudioSystem.getAudioInputStream(inFormat, audioInputStream);	
 			

@@ -11,6 +11,5 @@ public class MemeController
 	public void start() {
 		handler = new MidiHandler();
 		pianoScreen = new PianoScreenDisplay();
-		
 	}
 }
