@@ -1,11 +1,14 @@
 package meme.model;
 
-import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+
+import meme.view.PianoScreenDisplay;
 
 public class Key
 {
@@ -13,13 +16,14 @@ public class Key
 	private AudioInputStream audioInputStream;
 	private Clip clip;
 	private int keyNumber;
-	private boolean playing = false;
-
+	private boolean playing = true;
+	PianoScreenDisplay pianoScreen;
 	
 	
-	public Key(int keyNumber)
+	public Key(int keyNumber, PianoScreenDisplay pianoScreen)
 	{
 		this.keyNumber = keyNumber;
+		this.pianoScreen = pianoScreen;
 	}
 
 	public boolean isPlaying()
@@ -33,7 +37,7 @@ public class Key
 		int ch = inFormat.getChannels();
 		float rate = inFormat.getSampleRate();
 		int sampleSize = frequency;
-		return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sampleSize, 16, ch, ch * 2, sampleSize, inFormat.isBigEndian());
+		return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sampleSize, 16, ch, ch * 2, rate, inFormat.isBigEndian());
 	}
 
 	public void playKey()
@@ -75,13 +79,18 @@ public class Key
 		{
 			ex.printStackTrace();
 		}
-
+		
+		//Draw piano key on screen
+		
 	}
 
 	public void stopKey()
 	{
 		playing = false;
 		clip.stop();
+		
+		//Send data to screen that key is released
+		
 	}
 
 	// Getters

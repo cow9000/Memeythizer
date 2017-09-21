@@ -1,11 +1,12 @@
 package meme.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
+
+import meme.view.PianoScreenDisplay;
 
 public class MidiInputReceiver implements Receiver
 {
@@ -13,14 +14,18 @@ public class MidiInputReceiver implements Receiver
 	private String name;
 	private List<Key> Keys = new ArrayList<Key>();
 
+	PianoScreenDisplay pianoScreen;
 	
-	
-	public MidiInputReceiver(String name)
+	public MidiInputReceiver(String name, PianoScreenDisplay pianoScreen)
 	{
 		this.name = name;
 		for(int i = 0; i < 88; i++) {
-			Keys.add(new Key(i));
+			Keys.add(new Key(i, pianoScreen));
+			Keys.get(i).playKey();
 		}
+		
+		this.pianoScreen = pianoScreen;
+		
 	}
 
 	@Override
@@ -33,6 +38,7 @@ public class MidiInputReceiver implements Receiver
 		// Check if message is a valid key press
 		if (message.getLength() > 1)
 		{
+			
 			//Check if key is currently playing
 			if(Keys.get(translateKeyType(keyByte)).isPlaying()) {
 				Keys.get(translateKeyType(keyByte)).stopKey();

@@ -13,7 +13,6 @@ public class PianoScreenDisplay extends JFrame
 {
 	
 	private static String TITLE = "Memeythizer";
-	private boolean drawAtAll = false;
 	
 	
 	public PianoScreenDisplay(){
