@@ -15,17 +15,17 @@ public class MidiInputReceiver implements Receiver
 	private List<Key> Keys = new ArrayList<Key>();
 
 	PianoScreenDisplay pianoScreen;
-	
+
 	public MidiInputReceiver(String name, PianoScreenDisplay pianoScreen)
 	{
 		this.name = name;
-		for(int i = 0; i < 88; i++) {
+		for (int i = 0; i < 88; i++)
+		{
 			Keys.add(new Key(i, pianoScreen));
-			Keys.get(i).playKey();
 		}
-		
+
 		this.pianoScreen = pianoScreen;
-		
+
 	}
 
 	@Override
@@ -38,17 +38,19 @@ public class MidiInputReceiver implements Receiver
 		// Check if message is a valid key press
 		if (message.getLength() > 1)
 		{
-			
-			//Check if key is currently playing
-			if(Keys.get(translateKeyType(keyByte)).isPlaying()) {
+
+			// Check if key is currently playing
+			if (Keys.get(translateKeyType(keyByte)).isPlaying())
+			{
 				Keys.get(translateKeyType(keyByte)).stopKey();
-			}else {
+			}
+			else
+			{
 				Keys.get(translateKeyType(keyByte)).playKey();
 			}
 		}
 
 	}
-	
 
 	@Override
 	public void close()
@@ -56,7 +58,7 @@ public class MidiInputReceiver implements Receiver
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public int translateKeyType(byte keyType)
 	{
 		int keyNum = 1;
@@ -118,6 +120,5 @@ public class MidiInputReceiver implements Receiver
 
 		return keyNum;
 	}
-	
 
 }

@@ -12,9 +12,7 @@ import meme.view.PianoScreenDisplay;
 public class MidiHandler
 {
 	MidiDevice device;
-	
-	
-	
+
 	public MidiHandler(PianoScreenDisplay pianoScreen)
 	{
 		MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
@@ -26,11 +24,11 @@ public class MidiHandler
 				List<Transmitter> transmitter = device.getTransmitters();
 				for (int trans = 0; trans < transmitter.size(); trans++)
 				{
-					transmitter.get(trans).setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString(),pianoScreen));
+					transmitter.get(trans).setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString(), pianoScreen));
 				}
 
 				Transmitter keyboardTransmitter = device.getTransmitter();
-				keyboardTransmitter.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString(),pianoScreen));
+				keyboardTransmitter.setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString(), pianoScreen));
 
 				device.open();
 

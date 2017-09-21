@@ -18,8 +18,7 @@ public class Key
 	private int keyNumber;
 	private boolean playing = true;
 	PianoScreenDisplay pianoScreen;
-	
-	
+
 	public Key(int keyNumber, PianoScreenDisplay pianoScreen)
 	{
 		this.keyNumber = keyNumber;
@@ -60,8 +59,7 @@ public class Key
 
 		// Follow tutorial http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
 
-		
-		//Play sound
+		// Play sound
 		try
 		{
 
@@ -79,18 +77,16 @@ public class Key
 		{
 			ex.printStackTrace();
 		}
-		
-		//Draw piano key on screen
-		
+
 	}
 
 	public void stopKey()
 	{
 		playing = false;
 		clip.stop();
-		
-		//Send data to screen that key is released
-		
+
+		// Send data to screen that key is released
+
 	}
 
 	// Getters
@@ -98,8 +94,6 @@ public class Key
 	{
 		return keyNumber;
 	}
-	
-	
 
 	// Setters
 
