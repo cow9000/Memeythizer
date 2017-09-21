@@ -47,7 +47,7 @@ public class MidiInputReceiver implements Receiver
 					if(keyByte.equals(Keys.get(i).getKeyType())) {
 						//This is a key release
 						keyPressed = false;
-						break;
+						
 					}
 				}
 				//Then after we know if it is a key press or a key release do this.
@@ -75,7 +75,7 @@ public class MidiInputReceiver implements Receiver
 						if(keyByte.equals(Keys.get(i).getKeyType())) {
 							
 							//Stop sound from playing and then remove the key from array.
-							
+							//Keys.get(i).stopKey();
 							//Keys.get(i).stop();
 							
 							Keys.remove(i);

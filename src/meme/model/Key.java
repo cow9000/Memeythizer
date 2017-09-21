@@ -1,14 +1,27 @@
 package meme.model;
 
+import java.io.File;
+
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+
+import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.MultichannelToMono;
+import be.tarsos.dsp.WaveformSimilarityBasedOverlapAdd;
+import be.tarsos.dsp.WaveformSimilarityBasedOverlapAdd.Parameters;
+import be.tarsos.dsp.io.jvm.AudioDispatcherFactory;
+import be.tarsos.dsp.io.jvm.WaveformWriter;
+import be.tarsos.dsp.resample.RateTransposer;
 
 public class Key {
 	private byte keyType;
 
 	private AudioInputStream audioInputStream;
 	private Clip clip;
+
+	private double frequency;
 
 	public Key(byte keyType) {
 		this.keyType = keyType;
@@ -30,6 +43,8 @@ public class Key {
 
 		// A1 is 440Hz
 
+		//Follow tutorial http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
+		
 		try {
 			audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
 			clip = AudioSystem.getClip();
@@ -42,7 +57,7 @@ public class Key {
 	}
 
 	public void stopKey() {
-
+		clip.stop();
 	}
 
 	// Getters
