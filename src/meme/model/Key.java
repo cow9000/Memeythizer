@@ -27,6 +27,14 @@ public class Key {
 		this.keyType = keyType;
 	}
 
+	//FROM http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
+	private AudioFormat getOutFormat(AudioFormat inFormat) {
+		int ch = inFormat.getChannels();
+		float rate = inFormat.getSampleRate();	
+		return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 72000, 16, ch, ch * 2, rate,
+				inFormat.isBigEndian());
+	}
+	
 	public void playKey() {
 		// A1 = 15, A2 = 21, A3 = 2D, A4 = 39,
 		// A#1 = 16, A#2 = 22, A#3 = 2E, A#4 = 3A,
@@ -46,9 +54,16 @@ public class Key {
 		//Follow tutorial http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
 		
 		try {
+			
 			audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
+			
+			AudioFormat inFormat = getOutFormat(audioInputStream.getFormat());
+			
+			AudioInputStream in2 = AudioSystem.getAudioInputStream(inFormat, audioInputStream);	
+			
+			
 			clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
+			clip.open(in2);
 			clip.start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
