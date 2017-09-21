@@ -70,7 +70,12 @@ class CustomComponents extends JComponent{
 		double increaseXAmount = (windowSize.getWidth()/88);
 		boolean testColor = false;
 		
-		for(int i = 0; i < 89; i++) {
+		for(int i = 0; i < 88; i++) {
+			
+			int keyHeight = (int)Math.floor(windowSize.getHeight()*.6);
+			
+			int x = (int) (increaseXAmount * (i));
+			int y = (int) (windowSize.getHeight() - keyHeight + 64);
 			
 			//divide i by twelve, based on that calculate if it is a # or a normal key.
 			int keyType = i;
@@ -90,11 +95,11 @@ class CustomComponents extends JComponent{
 				g.setColor(Color.GRAY);
 			}
 			
-			int keyHeight = (int)Math.floor(windowSize.getHeight()*.6);
 			
-			g.fillRect((int)(increaseXAmount * (i - 1)), (int) (windowSize.getHeight() - keyHeight + 64), (int)increaseXAmount, keyHeight);
+			
+			g.fillRect(x, y, (int)increaseXAmount, keyHeight);
 			g.setColor(Color.RED);
-
+			g.drawString(Integer.toString(i), x, y);
 		
 		}
 	}

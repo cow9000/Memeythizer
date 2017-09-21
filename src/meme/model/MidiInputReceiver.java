@@ -9,93 +9,109 @@ import javax.sound.midi.Receiver;
 
 public class MidiInputReceiver implements Receiver
 {
-	
+
 	private String name;
 	private List<Key> Keys = new ArrayList<Key>();
+
 	
-	public MidiInputReceiver(String name) {
+	
+	public MidiInputReceiver(String name)
+	{
 		this.name = name;
-		
+		for(int i = 0; i < 88; i++) {
+			Keys.add(new Key(i));
+		}
 	}
 
 	@Override
 	public void send(MidiMessage message, long timeStamp)
 	{
-		
-		//Get message data
+
+		// Get message data
 		Byte keyByte = message.getMessage()[1];
-		
-		//Check if message is a valid key press
-		if(message.getLength() > 1) {
-			//If the array is empty, it is a key press
-			if(Keys.isEmpty()) {
-				
-				Key pressedKey = new Key(keyByte);
-				
-				pressedKey.playKey();
-				
-				Keys.add(pressedKey);
-				System.out.print("Key pressed (");
-				System.out.printf("%02X)\n", keyByte);
-				
+
+		// Check if message is a valid key press
+		if (message.getLength() > 1)
+		{
+			//Check if key is currently playing
+			if(Keys.get(translateKeyType(keyByte)).isPlaying()) {
+				Keys.get(translateKeyType(keyByte)).stopKey();
+			}else {
+				Keys.get(translateKeyType(keyByte)).playKey();
 			}
-			//Otherwise it must either be a key press or a key release
-			else {
-				boolean keyPressed = true;
-				//For loop to loop through Keys array and check if 
-				for(int i = 0; i < Keys.size(); i++) {
-					if(keyByte.equals(Keys.get(i).getKeyType())) {
-						//This is a key release
-						keyPressed = false;
-						
-					}
-				}
-				//Then after we know if it is a key press or a key release do this.
-				if(keyPressed) {
-					
-					Key pressedKey = new Key(keyByte);
-					
-					
-					//Play the sound of the pressed key
-					//pressedKey.play();
-					
-					pressedKey.playKey();
-					
-					Keys.add(pressedKey);
-					
-					//Here calculate the key Frequency and then 
-					
-					
-					System.out.print("Key pressed (");
-					System.out.printf("%02X)\n", keyByte);
-					
-				}else {
-					System.out.println("Key released");
-					for(int i = 0; i < Keys.size(); i++) {
-						if(keyByte.equals(Keys.get(i).getKeyType())) {
-							
-							//Stop sound from playing and then remove the key from array.
-							//Keys.get(i).stopKey();
-							//Keys.get(i).stop();
-							
-							Keys.remove(i);
-							break;
-							
-						}
-					}
-				}
-				
-			}
-			
 		}
-		
+
 	}
+	
 
 	@Override
 	public void close()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 	
+	public int translateKeyType(byte keyType)
+	{
+		int keyNum = 1;
+		String keyTypeToString = Byte.toString(keyType);
+
+		int fullNum = 0;
+
+		int num1 = Integer.parseInt(keyTypeToString.substring(0, 1));
+		String num2String = keyTypeToString.substring(1, 2);
+
+		int num2 = 0;
+
+		// Check if it is a value like 1A
+		// If so translate to 20, or 21
+		if (num2String.equalsIgnoreCase("A"))
+		{
+			num1 = num1 * 10;
+			num2 = 10;
+			fullNum = num1 + num2;
+		}
+		else if (num2String.equalsIgnoreCase("B"))
+		{
+			num1 = num1 * 10;
+			num2 = 11;
+			fullNum = num1 + num2;
+		}
+		else if (num2String.equalsIgnoreCase("C"))
+		{
+			num1 = num1 * 10;
+			num2 = 12;
+			fullNum = num1 + num2;
+		}
+		else if (num2String.equalsIgnoreCase("D"))
+		{
+			num1 = num1 * 10;
+			num2 = 13;
+			fullNum = num1 + num2;
+		}
+		else if (num2String.equalsIgnoreCase("E"))
+		{
+			num1 = num1 * 10;
+			num2 = 14;
+			fullNum = num1 + num2;
+		}
+		else if (num2String.equalsIgnoreCase("F"))
+		{
+			num1 = num1 * 10;
+			num2 = 15;
+			fullNum = num1 + num2;
+		}
+		else
+		{
+			fullNum = Integer.parseInt(keyTypeToString);
+		}
+
+		keyNum = fullNum - 15;
+
+		System.out.print(keyNum);
+
+		return keyNum;
+	}
+	
+
 }
