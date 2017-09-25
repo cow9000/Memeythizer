@@ -72,57 +72,61 @@ class CustomComponents extends JComponent
 		
 		boolean testColor = false;
 
+		
+		//Draw normal keys
+		for (int i = 0; i < 52; i++)
+		{
+				double increaseXAmount = (windowSize.getWidth() / 52);
+	
+				int keyHeight = (int) Math.floor(windowSize.getHeight() * .6);
+				
+				int y = (int) (windowSize.getHeight() - keyHeight + 64);
+				int x = (int) (increaseXAmount * (i));
+				
+				// divide i by twelve, based on that calculate if it is a # or a normal key.
+				g.setColor(Color.WHITE);
+				testColor = !testColor;
+				if(testColor) {
+					g.setColor(Color.LIGHT_GRAY);
+
+				}
+				
+				g.drawString(Integer.toString(i), x, y);
+				g.fillRect(x, y, (int)Math.ceil(increaseXAmount), keyHeight);	
+	
+				// Now based on keyType that will determine if it is a # or a normal key
+				
+		}
+		
+		//Draw sharp keys
+		
+		
+		
 		for (int i = 0; i < 88; i++)
 		{
-			for(int repeat = 0; repeat < 2; repeat++) {
 				double increaseXAmount = (windowSize.getWidth() / 88);
 	
 				int keyHeight = (int) Math.floor(windowSize.getHeight() * .6);
 				
 				int y = (int) (windowSize.getHeight() - keyHeight + 64);
 				int x = (int) (increaseXAmount * (i));
+				
 				// divide i by twelve, based on that calculate if it is a # or a normal key.
-				int keyType = i;
+				int keyType = i % 12;
 				
-				
-				if (i >= 12)
-				{
-					keyType = i % 12;
-					
-				}
 				
 				if(keyType == 0 || keyType == 2 || keyType == 3 || keyType == 5 || keyType == 7 || keyType == 8 || keyType == 10 || keyType == 12) {
-					//Normal
-					if(repeat == 1) {
-						g.setColor(Color.WHITE);
-						testColor = !testColor;
-						if(testColor) {
-							g.setColor(Color.LIGHT_GRAY);
-						}
-						
-						g.drawString(Integer.toString(i), x, y);
-						g.fillRect(x, y, (int) increaseXAmount, keyHeight);
-					}
 					
 				}else{
-					
-					if(repeat == 0) {
-						//Sharp
-						g.setColor(Color.BLACK);
-						keyHeight -= keyHeight/2;
-						g.fillRect(x, y, (int) increaseXAmount, keyHeight);
-						g.drawString(Integer.toString(i), x, y);
-					}
+					//Sharp
+					g.setColor(Color.BLACK);
+					keyHeight -= keyHeight/2;
+					g.fillRect(x, y, (int) increaseXAmount, keyHeight);
+					g.drawString(Integer.toString(i), x, y);
 				}
 	
 				// Now based on keyType that will determine if it is a # or a normal key
 				
-				
-	
-				
-				g.setColor(Color.RED);
-				
-			}
 		}
 	}
 
