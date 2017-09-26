@@ -71,73 +71,73 @@ class CustomComponents extends JComponent
 		// We need to piant 88 keys to the piano
 		// Based on the window size and height, draw them according to size of window.
 
-		
-		boolean testColor = false;
-
-		
-		
 		double increaseXAmountNormal = windowSize.getWidth() / 52;
-		double increaseXAmountFlat = increaseXAmountNormal/2;
-		double increaseXAmountByNumber = increaseXAmountNormal/increaseXAmountFlat;
-		//Draw normal keys
+		double increaseXAmountFlat = increaseXAmountNormal / 2;
+		// Draw normal keys
 
-		
-		//Draw sharp keys
-		
-		
+		// Draw sharp keys
+
 		int normalKeys = 0;
 		int flatKeys = 0;
 		double totalKeys = 0;
-		for(int whichOneToPaint = 0; whichOneToPaint < 2; whichOneToPaint ++) {
-			
+		for (int whichOneToPaint = 0; whichOneToPaint < 2; whichOneToPaint++)
+		{
+
 			totalKeys = 0;
 			flatKeys = 0;
-			
+
 			for (int i = 0; i < 88; i++)
 			{
-				totalKeys +=1;
+				totalKeys += 1;
 				int keyHeight = (int) Math.floor(windowSize.getHeight() * .6);
-				
+
 				int y = (int) (windowSize.getHeight() - keyHeight + 64);
-				
-				//X will equal (Totalcount-flatcount) * (NormalIncreaseAmount) - FlatIncreaseAmount
-				double x = (i-flatKeys) * (increaseXAmountNormal) - increaseXAmountFlat;
-				//System.out.println(x);
-				
-				
+
+				// X will equal (Totalcount-flatcount) * (NormalIncreaseAmount) - FlatIncreaseAmount
+				double x = (i - flatKeys) * (increaseXAmountNormal) - increaseXAmountFlat;
+				// System.out.println(x);
+
 				// divide i by twelve, based on that calculate if it is a # or a normal key.
 				int keyType = i % 12;
-				
-				
-				if(keyType == 0 || keyType == 2 || keyType == 3 || keyType == 5 || keyType == 7 || keyType == 8 || keyType == 10 || keyType == 12) {
-					if(whichOneToPaint == 0) {
-						x = increaseXAmountNormal * (normalKeys) ;
+
+				// Check if we are drawing a Flat key or a normal key
+				if (keyType == 0 || keyType == 2 || keyType == 3 || keyType == 5 || keyType == 7 || keyType == 8 || keyType == 10 || keyType == 12)
+				{
+
+					// First we check if we are on the normal Key drawing phase or flat key phase
+					if (whichOneToPaint == 0)
+					{
+						// Get where the x position will be
+						x = increaseXAmountNormal * (normalKeys);
+
+						// Set color to white then draw
 						g2.setColor(Color.WHITE);
-						testColor = !testColor;
-						if(testColor) {
-							g2.setColor(Color.LIGHT_GRAY);
-	
-						}
-						
 						g2.fill(new Rectangle2D.Double(x, y, increaseXAmountNormal, keyHeight));
-						
-						
-						
+
+						// Update normalKey variable
 						normalKeys += 1;
 					}
-				}else{
-					if(whichOneToPaint == 1) {
-						//Sharp
-						flatKeys +=1;
-						x = ((totalKeys-flatKeys) * (increaseXAmountNormal)) - increaseXAmountFlat/2;
-						System.out.println("Total Keys:" + totalKeys + ", Flat keys:" + flatKeys);
+				}
+				// If we are not drawing a normal key, draw a flat key
+				else
+				{
+					// If we are not in the normal drawing phase, draw the flat key
+					if (whichOneToPaint == 1)
+					{
+						// Sharp
+
+						// update flat Keys
+						flatKeys += 1;
+
+						// Calculate the x value
+						x = ((totalKeys - flatKeys) * (increaseXAmountNormal)) - increaseXAmountFlat / 2;
+
+						// draw the key
 						g2.setColor(Color.BLACK);
-						keyHeight -= keyHeight/2;
+						keyHeight -= keyHeight / 2;
 						g2.fill(new Rectangle2D.Double(x, y, increaseXAmountFlat, keyHeight));
 					}
 				}
-	
-				// Now based on keyType that will determine if it is a # or a normal key
 			}
 		}
 	}
