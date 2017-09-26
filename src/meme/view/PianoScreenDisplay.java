@@ -87,15 +87,22 @@ class CustomComponents extends JComponent
 		
 		int normalKeys = 0;
 		int flatKeys = 0;
+		double totalKeys = 0;
 		for(int whichOneToPaint = 0; whichOneToPaint < 2; whichOneToPaint ++) {
+			
+			totalKeys = 0;
+			flatKeys = 0;
+			
 			for (int i = 0; i < 88; i++)
 			{
+				totalKeys +=1;
 				int keyHeight = (int) Math.floor(windowSize.getHeight() * .6);
 				
 				int y = (int) (windowSize.getHeight() - keyHeight + 64);
 				
-				double x = increaseXAmountNormal * (i) - increaseXAmountFlat/2;
-				
+				//X will equal (Totalcount-flatcount) * (NormalIncreaseAmount) - FlatIncreaseAmount
+				double x = (i-flatKeys) * (increaseXAmountNormal) - increaseXAmountFlat;
+				//System.out.println(x);
 				
 				
 				// divide i by twelve, based on that calculate if it is a # or a normal key.
@@ -121,11 +128,12 @@ class CustomComponents extends JComponent
 				}else{
 					if(whichOneToPaint == 1) {
 						//Sharp
-						
+						flatKeys +=1;
+						x = ((totalKeys-flatKeys) * (increaseXAmountNormal)) - increaseXAmountFlat/2;
+						System.out.println("Total Keys:" + totalKeys + ", Flat keys:" + flatKeys);
 						g2.setColor(Color.BLACK);
 						keyHeight -= keyHeight/2;
 						g2.fill(new Rectangle2D.Double(x, y, increaseXAmountFlat, keyHeight));
-						flatKeys += 1;
 					}
 				}
 	
