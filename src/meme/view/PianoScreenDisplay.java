@@ -24,7 +24,7 @@ public class PianoScreenDisplay extends JFrame
 	private static String TITLE = "Memeythizer";
 
 	public PianoScreenDisplay(MidiHandler handler)
-	{
+	{	
 		keyboardReciever = handler.returnReciever();
 
 		this.handler = handler;
@@ -176,3 +176,37 @@ class CustomComponents extends JComponent
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

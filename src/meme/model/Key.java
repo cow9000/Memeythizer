@@ -118,7 +118,7 @@ public class Key
 		
 		g2.fill(new Rectangle2D.Double(x, y, increaseXAmount, keyHeight));
 		
-		g2.setColor(Color.BLACK);
+		g2.setColor(Color.LIGHT_GRAY);
 		g2.fill(new Rectangle2D.Double(x-1, y, 1, keyHeight));
 		
 		
