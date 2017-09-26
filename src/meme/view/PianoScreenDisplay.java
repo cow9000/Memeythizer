@@ -5,7 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -15,22 +16,25 @@ import meme.model.MidiInputReceiver;
 
 public class PianoScreenDisplay extends JFrame
 {
-	
+
 	MidiHandler handler;
 	MidiInputReceiver keyboardReciever;
-	
-	
+	MouseListener mouseListener;
+
 	private static String TITLE = "Memeythizer";
 
 	public PianoScreenDisplay(MidiHandler handler)
 	{
 		keyboardReciever = handler.returnReciever();
-		
-		setTitle(TITLE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		this.handler = handler;
 
+		this.mouseListener = new MouseListener();
+
+		this.addMouseListener(mouseListener);
+
+		setTitle(TITLE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		display();
 
 	}
@@ -49,18 +53,26 @@ public class PianoScreenDisplay extends JFrame
 
 }
 
+class MouseListener extends MouseAdapter
+{
+	public void mouseClicker(MouseEvent e)
+	{
+		
+	}
+}
+
 class CustomComponents extends JComponent
 {
 	private static final long serialVersionUID = 1L;
 	MidiHandler handler;
 	MidiInputReceiver keyboardReciever;
-	CustomComponents(MidiHandler handler){
-		this.handler=handler;
+
+	CustomComponents(MidiHandler handler)
+	{
+		this.handler = handler;
 		keyboardReciever = handler.returnReciever();
 	}
-	
-	
-	
+
 	@Override
 	public Dimension getMinimumSize()
 	{
@@ -100,8 +112,8 @@ class CustomComponents extends JComponent
 		double totalKeys = 0;
 		for (int whichOneToPaint = 0; whichOneToPaint < 2; whichOneToPaint++)
 		{
-			
-			//Reset variables so it doesn't mess with positions
+
+			// Reset variables so it doesn't mess with positions
 			totalKeys = 0;
 			flatKeys = 0;
 
@@ -113,7 +125,7 @@ class CustomComponents extends JComponent
 				int y = (int) (windowSize.getHeight() - keyHeight + 64);
 
 				// X will equal (Totalcount-flatcount) * (NormalIncreaseAmount) - FlatIncreaseAmount/2
-				double x = (i - flatKeys) * (increaseXAmountNormal) - increaseXAmountFlat/2;
+				double x = (i - flatKeys) * (increaseXAmountNormal) - increaseXAmountFlat / 2;
 
 				// divide i by twelve, based on that calculate if it is a # or a normal key.
 				int keyType = i % 12;
@@ -129,7 +141,7 @@ class CustomComponents extends JComponent
 						x = increaseXAmountNormal * (normalKeys);
 
 						// Set color to white then draw
-						
+
 						keyboardReciever.returnKey(i).draw(g, x, y, increaseXAmountNormal, keyHeight, Color.white);
 
 						// Update normalKey variable
@@ -153,10 +165,9 @@ class CustomComponents extends JComponent
 						// draw the key
 						g2.setColor(Color.BLACK);
 						keyHeight -= keyHeight / 2;
-						
-						
+
 						keyboardReciever.returnKey(i).draw(g, x, y, increaseXAmountFlat, keyHeight, Color.BLACK);
-						
+
 					}
 				}
 			}
