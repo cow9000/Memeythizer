@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -63,6 +64,7 @@ class CustomComponents extends JComponent
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		Graphics2D g2 = (Graphics2D) g;
 		super.paintComponent(g);
 		Dimension windowSize = getSize();
 
@@ -73,62 +75,58 @@ class CustomComponents extends JComponent
 		boolean testColor = false;
 
 		
-		int increaseXAmountFlat = new Double(windowSize.getWidth() / 88).intValue();
-		int increaseXAmountNormal = new Double(windowSize.getWidth() / 52).intValue();
 		
+		double increaseXAmountNormal = windowSize.getWidth() / 52;
+		double increaseXAmountFlat = increaseXAmountNormal/2;
+		double increaseXAmountByNumber = increaseXAmountNormal/increaseXAmountFlat;
 		//Draw normal keys
-		for (int i = 0; i < 52; i++)
-		{
-				
-	
-				int keyHeight = (int) Math.floor(windowSize.getHeight() * .6);
-				
-				int y = (int) (windowSize.getHeight() - keyHeight + 64);
-				int x = increaseXAmountNormal * (i);
-				
-				// divide i by twelve, based on that calculate if it is a # or a normal key.
-				g.setColor(Color.WHITE);
-				testColor = !testColor;
-				if(testColor) {
-					g.setColor(Color.LIGHT_GRAY);
 
-				}
-				
-				g.drawString(Integer.toString(i), x, y);
-				g.fillRect(x, y, increaseXAmountNormal, keyHeight);	
-	
-				// Now based on keyType that will determine if it is a # or a normal key
-				
-		}
 		
 		//Draw sharp keys
 		
 		
-		
-		for (int i = 0; i < 88; i++)
-		{
-	
+		int normalKeys = 0;
+		int flatKeys = 0;
+		for(int whichOneToPaint = 0; whichOneToPaint < 2; whichOneToPaint ++) {
+			for (int i = 0; i < 88; i++)
+			{
 				int keyHeight = (int) Math.floor(windowSize.getHeight() * .6);
 				
 				int y = (int) (windowSize.getHeight() - keyHeight + 64);
-				int x = increaseXAmountFlat * (i) ;
+				double x = increaseXAmountFlat * (i);
 				
 				// divide i by twelve, based on that calculate if it is a # or a normal key.
 				int keyType = i % 12;
 				
 				
 				if(keyType == 0 || keyType == 2 || keyType == 3 || keyType == 5 || keyType == 7 || keyType == 8 || keyType == 10 || keyType == 12) {
-					
+					if(whichOneToPaint == 0) {
+						x = increaseXAmountNormal * (normalKeys) ;
+						g2.setColor(Color.WHITE);
+						testColor = !testColor;
+						if(testColor) {
+							g2.setColor(Color.LIGHT_GRAY);
+	
+						}
+						
+						g2.fill(new Rectangle2D.Double(x, y, increaseXAmountNormal, keyHeight));
+						
+						
+						
+						normalKeys += 1;
+					}
 				}else{
-					//Sharp
-					g.setColor(Color.BLACK);
-					keyHeight -= keyHeight/2;
-					g.fillRect(x, y, increaseXAmountFlat, keyHeight);
-					g.drawString(Integer.toString(i), x, y);
+					if(whichOneToPaint == 1) {
+						//Sharp
+						g2.setColor(Color.BLACK);
+						keyHeight -= keyHeight/2;
+						g2.fill(new Rectangle2D.Double(x, y, increaseXAmountFlat, keyHeight));
+						flatKeys += 1;
+					}
 				}
 	
 				// Now based on keyType that will determine if it is a # or a normal key
-				
+			}
 		}
 	}
 

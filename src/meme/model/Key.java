@@ -16,7 +16,7 @@ public class Key
 	private AudioInputStream audioInputStream;
 	private Clip clip;
 	private int keyNumber;
-	private boolean playing = true;
+	private boolean playing = false;
 	PianoScreenDisplay pianoScreen;
 
 	public Key(int keyNumber, PianoScreenDisplay pianoScreen)

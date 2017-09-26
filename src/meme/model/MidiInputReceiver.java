@@ -34,7 +34,7 @@ public class MidiInputReceiver implements Receiver
 
 		// Get message data
 		Byte keyByte = message.getMessage()[1];
-
+		System.out.println(Byte.toString(keyByte));
 		// Check if message is a valid key press
 		if (message.getLength() > 1)
 		{
