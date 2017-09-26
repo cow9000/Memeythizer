@@ -156,7 +156,7 @@ class CustomComponents extends JComponent
 						
 						
 						keyboardReciever.returnKey(i).draw(g, x, y, increaseXAmountFlat, keyHeight, Color.BLACK);
-
+						
 					}
 				}
 			}
