@@ -93,7 +93,10 @@ class CustomComponents extends JComponent
 				int keyHeight = (int) Math.floor(windowSize.getHeight() * .6);
 				
 				int y = (int) (windowSize.getHeight() - keyHeight + 64);
-				double x = increaseXAmountFlat * (i);
+				
+				double x = increaseXAmountNormal * (i) - increaseXAmountFlat/2;
+				
+				
 				
 				// divide i by twelve, based on that calculate if it is a # or a normal key.
 				int keyType = i % 12;
@@ -118,6 +121,7 @@ class CustomComponents extends JComponent
 				}else{
 					if(whichOneToPaint == 1) {
 						//Sharp
+						
 						g2.setColor(Color.BLACK);
 						keyHeight -= keyHeight/2;
 						g2.fill(new Rectangle2D.Double(x, y, increaseXAmountFlat, keyHeight));
