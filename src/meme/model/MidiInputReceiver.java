@@ -14,17 +14,15 @@ public class MidiInputReceiver implements Receiver
 	private String name;
 	private List<Key> Keys = new ArrayList<Key>();
 
-	PianoScreenDisplay pianoScreen;
 
-	public MidiInputReceiver(String name, PianoScreenDisplay pianoScreen)
+	public MidiInputReceiver(String name)
 	{
 		this.name = name;
 		for (int i = 0; i < 88; i++)
 		{
-			Keys.add(new Key(i, pianoScreen));
+			Keys.add(new Key(i));
 		}
 
-		this.pianoScreen = pianoScreen;
 
 	}
 
@@ -119,6 +117,10 @@ public class MidiInputReceiver implements Receiver
 		System.out.print(keyNum);
 
 		return keyNum;
+	}
+	
+	public Key returnKey(int i) {
+		return Keys.get(i);
 	}
 
 }

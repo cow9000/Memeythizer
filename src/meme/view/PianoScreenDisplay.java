@@ -10,16 +10,26 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import meme.model.MidiHandler;
+import meme.model.MidiInputReceiver;
+
 public class PianoScreenDisplay extends JFrame
 {
-
+	
+	MidiHandler handler;
+	MidiInputReceiver keyboardReciever;
+	
+	
 	private static String TITLE = "Memeythizer";
 
-	public PianoScreenDisplay()
+	public PianoScreenDisplay(MidiHandler handler)
 	{
-
+		keyboardReciever = handler.returnReciever();
+		
 		setTitle(TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.handler = handler;
 
 		display();
 
@@ -27,7 +37,7 @@ public class PianoScreenDisplay extends JFrame
 
 	public void display()
 	{
-		CustomComponents cc = new CustomComponents();
+		CustomComponents cc = new CustomComponents(handler);
 		add(cc, BorderLayout.CENTER);
 
 		pack();
@@ -42,7 +52,15 @@ public class PianoScreenDisplay extends JFrame
 class CustomComponents extends JComponent
 {
 	private static final long serialVersionUID = 1L;
-
+	MidiHandler handler;
+	MidiInputReceiver keyboardReciever;
+	CustomComponents(MidiHandler handler){
+		this.handler=handler;
+		keyboardReciever = handler.returnReciever();
+	}
+	
+	
+	
 	@Override
 	public Dimension getMinimumSize()
 	{
@@ -82,7 +100,8 @@ class CustomComponents extends JComponent
 		double totalKeys = 0;
 		for (int whichOneToPaint = 0; whichOneToPaint < 2; whichOneToPaint++)
 		{
-
+			
+			//Reset variables so it doesn't mess with positions
 			totalKeys = 0;
 			flatKeys = 0;
 
@@ -93,9 +112,8 @@ class CustomComponents extends JComponent
 
 				int y = (int) (windowSize.getHeight() - keyHeight + 64);
 
-				// X will equal (Totalcount-flatcount) * (NormalIncreaseAmount) - FlatIncreaseAmount
-				double x = (i - flatKeys) * (increaseXAmountNormal) - increaseXAmountFlat;
-				// System.out.println(x);
+				// X will equal (Totalcount-flatcount) * (NormalIncreaseAmount) - FlatIncreaseAmount/2
+				double x = (i - flatKeys) * (increaseXAmountNormal) - increaseXAmountFlat/2;
 
 				// divide i by twelve, based on that calculate if it is a # or a normal key.
 				int keyType = i % 12;
@@ -111,8 +129,8 @@ class CustomComponents extends JComponent
 						x = increaseXAmountNormal * (normalKeys);
 
 						// Set color to white then draw
-						g2.setColor(Color.WHITE);
-						g2.fill(new Rectangle2D.Double(x, y, increaseXAmountNormal, keyHeight));
+						
+						keyboardReciever.returnKey(i).draw(g, x, y, increaseXAmountNormal, keyHeight, Color.white);
 
 						// Update normalKey variable
 						normalKeys += 1;
@@ -135,11 +153,15 @@ class CustomComponents extends JComponent
 						// draw the key
 						g2.setColor(Color.BLACK);
 						keyHeight -= keyHeight / 2;
-						g2.fill(new Rectangle2D.Double(x, y, increaseXAmountFlat, keyHeight));
+						
+						
+						keyboardReciever.returnKey(i).draw(g, x, y, increaseXAmountFlat, keyHeight, Color.BLACK);
+
 					}
 				}
 			}
 		}
+		repaint();
 	}
 
 }

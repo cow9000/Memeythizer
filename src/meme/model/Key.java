@@ -1,14 +1,14 @@
 package meme.model;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-
-import meme.view.PianoScreenDisplay;
 
 public class Key
 {
@@ -17,12 +17,15 @@ public class Key
 	private Clip clip;
 	private int keyNumber;
 	private boolean playing = false;
-	PianoScreenDisplay pianoScreen;
-
-	public Key(int keyNumber, PianoScreenDisplay pianoScreen)
+	private double x;
+	private double y;
+	private double increaseXAmount;
+	private double keyHeight;
+	private Color color;
+	
+	public Key(int keyNumber)
 	{
 		this.keyNumber = keyNumber;
-		this.pianoScreen = pianoScreen;
 	}
 
 	public boolean isPlaying()
@@ -88,6 +91,33 @@ public class Key
 		// Send data to screen that key is released
 
 	}
+	
+	//GRAPHICS
+	public void draw(Graphics g, double x, double y, double increaseXAmount, double keyHeight, Color color) {
+		Graphics2D g2 = (Graphics2D) g;
+		
+		
+		
+		this.x = x;
+		this.y = y;
+		this.increaseXAmount = increaseXAmount;
+		this.keyHeight = keyHeight;
+		this.color = color;
+		
+		
+		g2.setColor(color);
+		
+		//Do stuff here if key is playing
+		if(isPlaying()) {
+			g2.setColor(Color.green);
+		}
+		
+		g2.fill(new Rectangle2D.Double(x, y, increaseXAmount, keyHeight));
+		
+		
+		
+	}
+	
 
 	// Getters
 	public int getKeyNumber()

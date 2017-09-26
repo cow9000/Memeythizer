@@ -10,7 +10,9 @@ public class MemeController
 
 	public void start()
 	{
-		pianoScreen = new PianoScreenDisplay();
-		handler = new MidiHandler(pianoScreen);
+		
+		handler = new MidiHandler();
+		pianoScreen = new PianoScreenDisplay(handler);
+		
 	}
 }
