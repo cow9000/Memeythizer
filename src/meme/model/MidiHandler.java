@@ -8,12 +8,14 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
+import meme.view.PianoScreenDisplay;
+
 public class MidiHandler
 {
 	MidiDevice device;
 	MidiInputReceiver keyboardReciever;
 	
-	public MidiHandler()
+	public MidiHandler(PianoScreenDisplay pianoScreen)
 	{
 		MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
 		
@@ -25,12 +27,12 @@ public class MidiHandler
 				List<Transmitter> transmitter = device.getTransmitters();
 				for (int trans = 0; trans < transmitter.size(); trans++)
 				{
-					transmitter.get(trans).setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString()));
+					transmitter.get(trans).setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString(),pianoScreen));
 				}
 
 				Transmitter keyboardTransmitter = device.getTransmitter();
 				
-				keyboardReciever = new MidiInputReceiver(device.getDeviceInfo().toString());
+				keyboardReciever = new MidiInputReceiver(device.getDeviceInfo().toString(),pianoScreen);
 				
 				keyboardTransmitter.setReceiver(keyboardReciever);
 				

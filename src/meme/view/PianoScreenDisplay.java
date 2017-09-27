@@ -7,28 +7,36 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import meme.model.Key;
 import meme.model.MidiHandler;
 import meme.model.MidiInputReceiver;
 
 public class PianoScreenDisplay extends JFrame
 {
 
-	MidiHandler handler;
-	MidiInputReceiver keyboardReciever;
+
 	MouseListener mouseListener;
 
+	private ArrayList<Key> Keys;
+	
 	private static String TITLE = "Memeythizer";
 
-	public PianoScreenDisplay(MidiHandler handler)
+	public PianoScreenDisplay()
 	{	
-		keyboardReciever = handler.returnReciever();
-
-		this.handler = handler;
-
+		
+		
+		Keys = new ArrayList<Key>();
+		for (int i = 0; i < 88; i++)
+		{
+			
+			Keys.add(new Key(i));
+		}
+		
 		this.mouseListener = new MouseListener();
 
 		this.addMouseListener(mouseListener);
@@ -41,7 +49,7 @@ public class PianoScreenDisplay extends JFrame
 
 	public void display()
 	{
-		CustomComponents cc = new CustomComponents(handler);
+		CustomComponents cc = new CustomComponents(this);
 		add(cc, BorderLayout.CENTER);
 
 		pack();
@@ -49,6 +57,10 @@ public class PianoScreenDisplay extends JFrame
 		setMinimumSize(getSize());
 		setSize(getPreferredSize());
 		setVisible(true);
+	}
+	
+	public Key returnKey(int i) {
+		return Keys.get(i);
 	}
 
 }
@@ -64,14 +76,15 @@ class MouseListener extends MouseAdapter
 class CustomComponents extends JComponent
 {
 	private static final long serialVersionUID = 1L;
-	MidiHandler handler;
-	MidiInputReceiver keyboardReciever;
 
-	CustomComponents(MidiHandler handler)
+	PianoScreenDisplay piano;
+	
+	CustomComponents(PianoScreenDisplay piano)
 	{
-		this.handler = handler;
-		keyboardReciever = handler.returnReciever();
+		this.piano = piano;
 	}
+	
+	
 
 	@Override
 	public Dimension getMinimumSize()
@@ -90,10 +103,18 @@ class CustomComponents extends JComponent
 	{
 		return new Dimension(800, 800);
 	}
+	
+	
+	//CHANGE T
+	public Key returnKey(int i) {
+		//RETURN KEY HERE NEED TO FETCH FROM MAIN CLASS UP THERE ^^
+		return piano.returnKey(i);
+	}
 
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		
 		Graphics2D g2 = (Graphics2D) g;
 		super.paintComponent(g);
 		Dimension windowSize = getSize();
@@ -142,7 +163,7 @@ class CustomComponents extends JComponent
 
 						// Set color to white then draw
 
-						keyboardReciever.returnKey(i).draw(g, x, y, increaseXAmountNormal, keyHeight, Color.white);
+						returnKey(i).draw(g, x, y, increaseXAmountNormal, keyHeight, Color.white);
 
 						// Update normalKey variable
 						normalKeys += 1;
@@ -165,8 +186,8 @@ class CustomComponents extends JComponent
 						// draw the key
 						g2.setColor(Color.BLACK);
 						keyHeight -= keyHeight / 2;
-
-						keyboardReciever.returnKey(i).draw(g, x, y, increaseXAmountFlat, keyHeight, Color.BLACK);
+					
+						returnKey(i).draw(g, x, y, increaseXAmountFlat, keyHeight, Color.BLACK);
 
 					}
 				}

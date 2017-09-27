@@ -16,7 +16,7 @@ public class Key
 	private AudioInputStream audioInputStream;
 	private Clip clip;
 	private int keyNumber;
-	private boolean playing = false;
+	private boolean playing;
 	private double x;
 	private double y;
 	private double increaseXAmount;
@@ -30,12 +30,19 @@ public class Key
 
 	public boolean isPlaying()
 	{
-		return playing;
+		
+		return this.playing;
+	}
+	
+	public void setPlaying(boolean playing) {
+		this.playing = playing;
 	}
 
 	// FROM http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
-	private AudioFormat getOutFormat(AudioFormat inFormat, int frequency)
-	{
+	public AudioFormat getOutFormat(AudioFormat inFormat, int frequency)
+	{	
+		
+		
 		int ch = inFormat.getChannels();
 		float rate = inFormat.getSampleRate();
 		int sampleSize = frequency;
@@ -45,7 +52,6 @@ public class Key
 	public void playKey()
 	{
 		
-		if(playing != true) {
 			// A1 = 15, A2 = 21, A3 = 2D, A4 = 39,
 			// A#1 = 16, A#2 = 22, A#3 = 2E, A#4 = 3A,
 			// B1 = 17, B2 = 23, B3 = 2F, B4 = 3B,
@@ -58,8 +64,8 @@ public class Key
 			// F#1 = 1E, F#2 = 2A, F#3 = 36, F#4 = 42,
 			// G1 = 1F, G2 = 2B, G3 = 37, G4 = 43,
 			// G#1 = 20, G#2 = 2C, G#3 = 38, G#4 = 44,
-			playing = true;
-	
+			this.playing = true;
+			//System.out.println(isPlaying());
 			// A1 is 440Hz
 	
 			// Follow tutorial http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
@@ -68,7 +74,7 @@ public class Key
 			try
 			{
 	
-				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("Crash Bandicoot 'Woah' Sound Effect (Meme).wav"));
+				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("Grand Piano.wav"));
 	
 				AudioFormat inFormat = getOutFormat(audioInputStream.getFormat(), 700 + (keyNumber * 20));
 	
@@ -83,7 +89,7 @@ public class Key
 				ex.printStackTrace();
 			}
 			
-		}
+		
 
 	}
 
@@ -98,6 +104,9 @@ public class Key
 	
 	//GRAPHICS
 	public void draw(Graphics g, double x, double y, double increaseXAmount, double keyHeight, Color color) {
+		
+		boolean p = this.playing;
+		
 		Graphics2D g2 = (Graphics2D) g;
 		
 		
@@ -108,18 +117,20 @@ public class Key
 		this.keyHeight = keyHeight;
 		this.color = color;
 		
-		
-		g2.setColor(color);
+		//System.out.println(this.keyNumber);
+		g2.setColor(this.color);
 		
 		//Do stuff here if key is playing
-		if(isPlaying()) {
+		if(p) {
+			
 			g2.setColor(Color.green);
+			
 		}
 		
-		g2.fill(new Rectangle2D.Double(x, y, increaseXAmount, keyHeight));
+		g2.fill(new Rectangle2D.Double(this.x, this.y, this.increaseXAmount, this.keyHeight));
 		
 		g2.setColor(Color.LIGHT_GRAY);
-		g2.fill(new Rectangle2D.Double(x-1, y, 1, keyHeight));
+		g2.fill(new Rectangle2D.Double(this.x-1, this.y, 1, this.keyHeight));
 		
 		
 	}
