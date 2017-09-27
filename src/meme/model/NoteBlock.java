@@ -8,6 +8,10 @@ public class NoteBlock
 	private double Y;
 	private double width;
 	private double height;
+	
+	private double addedY;
+	private double addedHeight;
+	
 	private int keyType;
 	private boolean playing;
 	
@@ -17,9 +21,9 @@ public class NoteBlock
 	
 	public void draw(Graphics g) {
 		if(playing == false) {
-			Y++;
+			addedY++;
 		}else {
-			height++;
+			addedHeight++;
 		}
 		
 		//Draw noteBlock
