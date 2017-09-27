@@ -35,6 +35,7 @@ public class PianoScreenDisplay extends JFrame
 		{
 			
 			Keys.add(new Key(i));
+			if(i%3 == 0) Keys.get(i).playKey();
 		}
 		
 		this.mouseListener = new MouseListener();

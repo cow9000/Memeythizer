@@ -23,6 +23,8 @@ public class Key
 	private double keyHeight;
 	private Color color;
 	
+	private int playTime = 0;
+	
 	public Key(int keyNumber)
 	{
 		this.keyNumber = keyNumber;
@@ -74,7 +76,7 @@ public class Key
 			try
 			{
 	
-				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("Grand Piano.wav"));
+				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
 	
 				AudioFormat inFormat = getOutFormat(audioInputStream.getFormat(), 700 + (keyNumber * 20));
 	
@@ -105,11 +107,8 @@ public class Key
 	//GRAPHICS
 	public void draw(Graphics g, double x, double y, double increaseXAmount, double keyHeight, Color color) {
 		
-		boolean p = this.playing;
-		
 		Graphics2D g2 = (Graphics2D) g;
-		
-		
+	
 		
 		this.x = x;
 		this.y = y;
@@ -121,8 +120,8 @@ public class Key
 		g2.setColor(this.color);
 		
 		//Do stuff here if key is playing
-		if(p) {
-			
+		if(isPlaying()) {
+			playTime += 1;
 			g2.setColor(Color.green);
 			
 		}
