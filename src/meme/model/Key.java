@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -23,11 +25,14 @@ public class Key
 	private double keyHeight;
 	private Color color;
 	
+	private List<NoteBlock> drawNotesPlayed;
+	
 	private int playTime = 0;
 	
 	public Key(int keyNumber)
 	{
 		this.keyNumber = keyNumber;
+		drawNotesPlayed = new ArrayList<NoteBlock>();
 	}
 
 	public boolean isPlaying()
@@ -53,6 +58,8 @@ public class Key
 
 	public void playKey()
 	{
+		
+			drawNotesPlayed.add(new NoteBlock(keyNumber));
 		
 			// A1 = 15, A2 = 21, A3 = 2D, A4 = 39,
 			// A#1 = 16, A#2 = 22, A#3 = 2E, A#4 = 3A,
@@ -97,6 +104,14 @@ public class Key
 
 	public void stopKey()
 	{
+		
+		for(int i = 0; i < drawNotesPlayed.size(); i++) {
+			NoteBlock currentNote = drawNotesPlayed.get(i);
+			if(currentNote.getKeyType() == this.keyNumber) {
+				drawNotesPlayed.get(i).setPlaying(false);
+			}
+		}
+		
 		playing = false;
 		clip.stop();
 
@@ -110,6 +125,14 @@ public class Key
 		Graphics2D g2 = (Graphics2D) g;
 	
 		
+		//DRAW NOTES
+		for(int i = 0; i < drawNotesPlayed.size(); i++) {
+			drawNotesPlayed.get(i).draw(g,x,y,increaseXAmount);
+		}
+		
+		
+		
+		//DRAW KEY
 		this.x = x;
 		this.y = y;
 		this.increaseXAmount = increaseXAmount;
