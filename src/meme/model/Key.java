@@ -122,6 +122,8 @@ public class Key
 	//GRAPHICS
 	public void draw(Graphics g, double x, double y, double increaseXAmount, double keyHeight, Color color) {
 		
+		
+		
 		Graphics2D g2 = (Graphics2D) g;
 	
 		
@@ -144,7 +146,7 @@ public class Key
 		
 		//Do stuff here if key is playing
 		if(isPlaying()) {
-			playTime += 1;
+			playTime += 0.05;
 			g2.setColor(Color.green);
 			
 		}
