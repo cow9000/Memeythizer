@@ -107,9 +107,7 @@ public class Key
 		
 		for(int i = 0; i < drawNotesPlayed.size(); i++) {
 			NoteBlock currentNote = drawNotesPlayed.get(i);
-			if(currentNote.getKeyType() == this.keyNumber) {
-				drawNotesPlayed.get(i).setPlaying(false);
-			}
+			currentNote.setPlaying(false);
 		}
 		
 		playing = false;
@@ -129,7 +127,9 @@ public class Key
 		
 		//DRAW NOTES
 		for(int i = 0; i < drawNotesPlayed.size(); i++) {
-			drawNotesPlayed.get(i).draw(g,x,y,increaseXAmount);
+			boolean flat = false;
+			if(color.equals(Color.BLACK)) flat = true;
+			drawNotesPlayed.get(i).draw(g,x,y,increaseXAmount,flat);
 		}
 		
 		

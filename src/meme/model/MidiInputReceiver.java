@@ -119,7 +119,7 @@ public class MidiInputReceiver implements Receiver
 			fullNum = Integer.parseInt(keyTypeToString);
 		}
 
-		keyNum = fullNum - 15;
+		keyNum = fullNum - 21;
 
 		
 

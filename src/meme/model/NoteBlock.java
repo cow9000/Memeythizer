@@ -37,20 +37,24 @@ public class NoteBlock
 	
 	
 	//GRAPHICS
-	public void draw(Graphics g, double x, double y, double width) {
+	public void draw(Graphics g, double x, double y, double width, boolean flat) {
 		
+		Graphics2D g2 = (Graphics2D) g;
 		
-		System.out.println("Drawn NOTE BLOCK");
-		timePlaying += 0.05;
+		//System.out.println("Drawn NOTE BLOCK");
+		timePlaying += 0.2;
 		y -= timePlaying;
 		if(playing) {
 			addedHeight = timePlaying + 1;
 		}
 		
-		//Draw noteBlock
+		//Draw noteBlock and set color based on key type
 		
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setPaint(Color.RED);
+
+		g2.setPaint(Color.LIGHT_GRAY);
+		if(flat) g2.setPaint(Color.DARK_GRAY);
+		
+		
 		g2.fill(new Rectangle2D.Double(x, y, width, addedHeight));
 		
 	}
