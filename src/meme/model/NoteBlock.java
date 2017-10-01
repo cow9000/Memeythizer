@@ -21,6 +21,14 @@ public class NoteBlock
 		
 	}
 	
+	public boolean shouldDraw() {
+		if(addedHeight > 1000) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 	//GETTERS
 	public boolean isPlaying() {
 		return playing;

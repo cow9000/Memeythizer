@@ -111,7 +111,7 @@ public class Key
 		}
 		
 		playing = false;
-		clip.stop();
+		//clip.stop();
 
 		// Send data to screen that key is released
 
@@ -128,8 +128,17 @@ public class Key
 		//DRAW NOTES
 		for(int i = 0; i < drawNotesPlayed.size(); i++) {
 			boolean flat = false;
-			if(color.equals(Color.BLACK)) flat = true;
-			drawNotesPlayed.get(i).draw(g,x,y,increaseXAmount,flat);
+			
+			if(color.equals(Color.BLACK)) {
+				flat = true;
+			}
+			
+			if(drawNotesPlayed.get(i).shouldDraw()) {
+				drawNotesPlayed.get(i).draw(g,x,y,increaseXAmount,flat);
+			}else {
+				drawNotesPlayed.remove(i);
+			}
+			
 		}
 		
 		
