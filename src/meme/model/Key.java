@@ -156,13 +156,12 @@ public class Key
 		//Do stuff here if key is playing
 		if(isPlaying()) {
 			playTime += 0.05;
-			g2.setColor(Color.green);
-			
+			g2.setColor(new Color(30, 183, 235));
 		}
 		
 		g2.fill(new Rectangle2D.Double(this.x, this.y, this.increaseXAmount, this.keyHeight));
 		
-		g2.setColor(Color.LIGHT_GRAY);
+		g2.setColor(new Color(215, 215, 215));
 		g2.fill(new Rectangle2D.Double(this.x-1, this.y, 1, this.keyHeight));
 		
 		

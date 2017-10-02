@@ -13,16 +13,18 @@ public class NoteBlock
 	private double timePlaying;
 	private int keyType;
 	private boolean playing;
+	private double addedHeightAfterNotPlaying;
 	
 	NoteBlock(int keyType){
 		
 		addedHeight = 1;
+		addedHeightAfterNotPlaying = 0;
 		playing = true;
 		
 	}
 	
 	public boolean shouldDraw() {
-		if(addedHeight > 1000) {
+		if(addedHeightAfterNotPlaying > 6000) {
 			return false;
 		}
 		return true;
@@ -53,7 +55,9 @@ public class NoteBlock
 		timePlaying += 0.2;
 		y -= timePlaying;
 		if(playing) {
-			addedHeight = timePlaying + 1;
+			addedHeight = timePlaying;
+		}else {
+			addedHeightAfterNotPlaying += 1;
 		}
 		
 		//Draw noteBlock and set color based on key type

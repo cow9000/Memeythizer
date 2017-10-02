@@ -52,7 +52,6 @@ public class PianoScreenDisplay extends JFrame
 	{
 		CustomComponents cc = new CustomComponents(this);
 		add(cc, BorderLayout.CENTER);
-
 		pack();
 
 		setMinimumSize(getSize());
@@ -164,7 +163,7 @@ class CustomComponents extends JComponent
 
 						// Set color to white then draw
 
-						returnKey(i).draw(g, x, y, increaseXAmountNormal, keyHeight, Color.white);
+						returnKey(i).draw(g, x, y, increaseXAmountNormal, keyHeight, new Color(255, 255, 255));
 
 						// Update normalKey variable
 						normalKeys += 1;
