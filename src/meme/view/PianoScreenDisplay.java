@@ -8,13 +8,13 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import meme.model.Key;
-import meme.model.MidiHandler;
-import meme.model.MidiInputReceiver;
 
 public class PianoScreenDisplay extends JFrame
 {
@@ -26,8 +26,14 @@ public class PianoScreenDisplay extends JFrame
 	
 	private static String TITLE = "Memeythizer";
 
+	int testPlayKey = 0;
+	boolean playBack = false;
+	Timer timer = new Timer(); 
+	
 	public PianoScreenDisplay()
 	{	
+		
+		
 		
 		
 		Keys = new ArrayList<Key>();
@@ -35,8 +41,36 @@ public class PianoScreenDisplay extends JFrame
 		{
 			
 			Keys.add(new Key(i));
-
+			
 		}
+		//TESTING THE FREQUENCIES
+		timer.schedule( new TimerTask() 
+		{ 
+		    public void run() { 
+		    		
+		    		Keys.get(testPlayKey).playKey();
+		    		
+		    		
+		    		
+		    		
+		    		if(playBack == false) {
+		    			if(testPlayKey != 0) Keys.get(testPlayKey-1).stopKey();
+		    			testPlayKey += 1;
+		    			
+		    			if(testPlayKey == 87) playBack = true;
+		    			
+		    		}else {
+		    			if(testPlayKey != 87) Keys.get(testPlayKey+1).stopKey();
+		    			testPlayKey -= 1;
+		    			
+		    			if(testPlayKey == 0) playBack = false;
+		    		}
+		    		
+		    		
+		    	
+		    } 
+		}, 0, 100);
+		///////////////////////////////////////////////////////////
 		
 		this.mouseListener = new MouseListener();
 
@@ -140,6 +174,7 @@ class CustomComponents extends JComponent
 
 			for (int i = 0; i < 88; i++)
 			{
+				
 				totalKeys += 1;
 				int keyHeight = (int) Math.floor(windowSize.getHeight() * .6);
 

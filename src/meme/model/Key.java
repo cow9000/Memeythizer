@@ -53,6 +53,9 @@ public class Key
 		int ch = inFormat.getChannels();
 		float rate = inFormat.getSampleRate();
 		int sampleSize = frequency;
+		//Generating key frequencies
+		sampleSize = (int) Math.round(Math.pow((Math.pow(2, 1.0/12)),(keyNumber+1) - 49) * frequency);
+		System.out.println(sampleSize);
 		return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sampleSize, 16, ch, ch * 2, rate, inFormat.isBigEndian());
 	}
 
@@ -83,13 +86,14 @@ public class Key
 			try
 			{
 	
-				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
+				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("Crash-bandicoot-_woah_-Sound-Effect.wav"));
 	
-				AudioFormat inFormat = getOutFormat(audioInputStream.getFormat(), 700 + (keyNumber * 20));
+				AudioFormat inFormat = getOutFormat(audioInputStream.getFormat(), 4000);
 	
 				AudioInputStream in2 = AudioSystem.getAudioInputStream(inFormat, audioInputStream);
 	
 				clip = AudioSystem.getClip();
+				System.out.println(clip.getFormat());
 				clip.open(in2);
 				clip.start();
 			}
@@ -108,6 +112,8 @@ public class Key
 		for(int i = 0; i < drawNotesPlayed.size(); i++) {
 			NoteBlock currentNote = drawNotesPlayed.get(i);
 			currentNote.setPlaying(false);
+			
+			
 		}
 		
 		playing = false;
