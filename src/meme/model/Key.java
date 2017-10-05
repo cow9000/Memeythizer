@@ -86,7 +86,7 @@ public class Key
 			try
 			{
 	
-				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("Crash-bandicoot-_woah_-Sound-Effect.wav"));
+				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
 	
 				AudioFormat inFormat = getOutFormat(audioInputStream.getFormat(), 4000);
 	
@@ -108,16 +108,17 @@ public class Key
 
 	public void stopKey()
 	{
-		
-		for(int i = 0; i < drawNotesPlayed.size(); i++) {
-			NoteBlock currentNote = drawNotesPlayed.get(i);
-			currentNote.setPlaying(false);
+		if(playing == true) {
+			for(int i = 0; i < drawNotesPlayed.size(); i++) {
+				NoteBlock currentNote = drawNotesPlayed.get(i);
+				currentNote.setPlaying(false);
+				
+				
+			}
 			
-			
+			playing = false;
+			clip.stop();
 		}
-		
-		playing = false;
-		//clip.stop();
 
 		// Send data to screen that key is released
 

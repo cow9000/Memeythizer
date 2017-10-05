@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,9 +49,9 @@ public class PianoScreenDisplay extends JFrame
 		{ 
 		    public void run() { 
 		    		
+		    		
+		    		
 		    		Keys.get(testPlayKey).playKey();
-		    		
-		    		
 		    		
 		    		
 		    		if(playBack == false) {
