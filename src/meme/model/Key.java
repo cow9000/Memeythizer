@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,9 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Key
 {
@@ -25,14 +30,75 @@ public class Key
 	private double keyHeight;
 	private Color color;
 	
+	private AudioInputStream stream;
+	
+	private SourceDataLine line;
+	
+	
 	private List<NoteBlock> drawNotesPlayed;
 	
 	private int playTime = 0;
+	
+	// Run sonic. From https://github.com/waywardgeek/sonic/blob/master/Main.java
+    private static void runSonic(
+        AudioInputStream audioStream,
+        SourceDataLine line,
+        float speed,
+        float pitch,
+        float rate,
+        float volume,
+        boolean emulateChordPitch,
+        int quality,
+        int sampleRate,
+        int numChannels) throws IOException
+    {
+        Sonic sonic = new Sonic(sampleRate, numChannels);
+        int bufferSize = line.getBufferSize();
+        byte inBuffer[] = new byte[bufferSize];
+        byte outBuffer[] = new byte[bufferSize];
+        int numRead, numWritten;
+
+        sonic.setSpeed(speed);
+        sonic.setPitch(pitch);
+        sonic.setRate(rate);
+        sonic.setVolume(volume);
+        sonic.setChordPitch(emulateChordPitch);
+        sonic.setQuality(quality);
+        do {
+            numRead = audioStream.read(inBuffer, 0, bufferSize);
+            if(numRead <= 0) {
+                sonic.flushStream();
+            } else {
+                sonic.writeBytesToStream(inBuffer, numRead);
+            }
+            do {
+                numWritten = sonic.readBytesFromStream(outBuffer, bufferSize);
+                if(numWritten > 0) {
+                    line.write(outBuffer, 0, numWritten);
+                }
+            } while(numWritten > 0);
+        } while(numRead > 0);
+    }
+	
 	
 	public Key(int keyNumber)
 	{
 		this.keyNumber = keyNumber;
 		drawNotesPlayed = new ArrayList<NoteBlock>();
+		try
+		{
+			this.stream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
+		}
+		catch (UnsupportedAudioFileException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean isPlaying()
@@ -83,7 +149,7 @@ public class Key
 			// Follow tutorial http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
 	
 			// Play sound
-			try
+			/*try
 			{
 	
 				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
@@ -100,9 +166,34 @@ public class Key
 			catch (Exception ex)
 			{
 				ex.printStackTrace();
-			}
+			}*/
+	        float speed = 1.0f;
+	        float pitch = (float) Math.pow((Math.pow(2, 1.0/12)),(keyNumber+1) - 49);
+	        System.out.println(pitch);
+	        float rate = 1.0f;
+	        float volume = 1.0f;
+	        boolean emulateChordPitch = false;
+	        int quality = 0;
+	        
+	        
+	        try {
+	        	this.stream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
+	        AudioFormat format = stream.getFormat();
+	        int sampleRate = (int)format.getSampleRate();
+	        int numChannels = format.getChannels(); 
+	        SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, format,
+	        	((int)stream.getFrameLength()*format.getFrameSize()));
+	        SourceDataLine line = (SourceDataLine)AudioSystem.getLine(info);
+	        line.open(stream.getFormat());
+	        
+	        runSonic(stream, line, speed, pitch, rate, volume, emulateChordPitch, quality,
+	            sampleRate, numChannels);
+	        line.start();
+	        }catch(Exception e) {
+	        		e.printStackTrace();
+	        }
 			
-		
+	        
 
 	}
 
@@ -114,10 +205,11 @@ public class Key
 				currentNote.setPlaying(false);
 				
 				
-			}
+			}			
 			
 			playing = false;
-			clip.stop();
+			//line.stop();
+			//line.drain();
 		}
 
 		// Send data to screen that key is released

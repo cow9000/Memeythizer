@@ -45,6 +45,7 @@ public class PianoScreenDisplay extends JFrame
 			
 		}
 		//TESTING THE FREQUENCIES
+		
 		timer.schedule( new TimerTask() 
 		{ 
 		    public void run() { 
@@ -71,6 +72,7 @@ public class PianoScreenDisplay extends JFrame
 		    	
 		    } 
 		}, 0, 100);
+		
 		///////////////////////////////////////////////////////////
 		
 		this.mouseListener = new MouseListener();
