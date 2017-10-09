@@ -40,7 +40,7 @@ public class Key
 	private int playTime = 0;
 	
 	// Run sonic. From https://github.com/waywardgeek/sonic/blob/master/Main.java
-    private static void runSonic(
+    private void runSonic(
         AudioInputStream audioStream,
         SourceDataLine line,
         float speed,
@@ -168,7 +168,7 @@ public class Key
 				ex.printStackTrace();
 			}*/
 	        float speed = 1.0f;
-	        float pitch = (float) Math.pow((Math.pow(2, 1.0/12)),(keyNumber+1) - 49);
+	        float pitch = (float) Math.pow((Math.pow(2, 1.0/12)),(keyNumber+1) - 49) + .2f;
 	        System.out.println(pitch);
 	        float rate = 1.0f;
 	        float volume = 1.0f;
@@ -189,6 +189,7 @@ public class Key
 	        runSonic(stream, line, speed, pitch, rate, volume, emulateChordPitch, quality,
 	            sampleRate, numChannels);
 	        line.start();
+	        
 	        }catch(Exception e) {
 	        		e.printStackTrace();
 	        }
