@@ -30,17 +30,19 @@ public class Key
 	private double keyHeight;
 	private Color color;
 	
+	//SOUND SETTINGS
 	private AudioInputStream stream;
-	
 	private SourceDataLine line;
 	
+	float speed, pitch, rate, volume;
+	boolean emulateChordPitch;
+	int quality, sampleRate, numChannels;
 	
 	private List<NoteBlock> drawNotesPlayed;
-	
-	private int playTime = 0;
+
 	
 	// Run sonic. From https://github.com/waywardgeek/sonic/blob/master/Main.java
-    private void runSonic(
+    private static void runSonic(
         AudioInputStream audioStream,
         SourceDataLine line,
         float speed,
@@ -85,6 +87,7 @@ public class Key
 	{
 		this.keyNumber = keyNumber;
 		drawNotesPlayed = new ArrayList<NoteBlock>();
+		//SOUND SETTINGS
 		try
 		{
 			this.stream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
@@ -99,6 +102,13 @@ public class Key
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.speed = 1.0f;
+		this.pitch = (float) Math.pow((Math.pow(2, 1.0/12)),(keyNumber+1) - 49) + .2f;
+		this.rate = 1.0f;
+        this.volume = 1.0f;
+        this.emulateChordPitch = false;
+        this.quality = 0;
+		
 	}
 
 	public boolean isPlaying()
@@ -129,19 +139,7 @@ public class Key
 	{
 		
 			drawNotesPlayed.add(new NoteBlock(keyNumber));
-		
-			// A1 = 15, A2 = 21, A3 = 2D, A4 = 39,
-			// A#1 = 16, A#2 = 22, A#3 = 2E, A#4 = 3A,
-			// B1 = 17, B2 = 23, B3 = 2F, B4 = 3B,
-			// C1 = 18, C2 = 24, C3 = 30, C4 = 3C,
-			// C#1 = 19, C#2 = 25, C#3 = 31, C#4 = 3D,
-			// D1 = 1A, D2 = 26, D3 = 32, D4 = 3E,
-			// D#1 = 1B, D#2 = 27, D#3 = 33, D#4 = 3F,
-			// E1 = 1C, E2 = 28, E3 = 34, E4 = 40,
-			// F1 = 1D, F2 = 29, F3 = 35, F4 = 41,
-			// F#1 = 1E, F#2 = 2A, F#3 = 36, F#4 = 42,
-			// G1 = 1F, G2 = 2B, G3 = 37, G4 = 43,
-			// G#1 = 20, G#2 = 2C, G#3 = 38, G#4 = 44,
+
 			this.playing = true;
 			//System.out.println(isPlaying());
 			// A1 is 440Hz
@@ -167,13 +165,7 @@ public class Key
 			{
 				ex.printStackTrace();
 			}*/
-	        float speed = 1.0f;
-	        float pitch = (float) Math.pow((Math.pow(2, 1.0/12)),(keyNumber+1) - 49) + .2f;
-	        System.out.println(pitch);
-	        float rate = 1.0f;
-	        float volume = 1.0f;
-	        boolean emulateChordPitch = false;
-	        int quality = 0;
+	        
 	        
 	        
 	        try {
@@ -189,7 +181,6 @@ public class Key
 	        runSonic(stream, line, speed, pitch, rate, volume, emulateChordPitch, quality,
 	            sampleRate, numChannels);
 	        line.start();
-	        
 	        }catch(Exception e) {
 	        		e.printStackTrace();
 	        }
@@ -255,7 +246,6 @@ public class Key
 		
 		//Do stuff here if key is playing
 		if(isPlaying()) {
-			playTime += 0.05;
 			g2.setColor(new Color(30, 183, 235));
 		}
 		

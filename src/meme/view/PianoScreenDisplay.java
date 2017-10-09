@@ -42,7 +42,6 @@ public class PianoScreenDisplay extends JFrame
 		{
 			
 			Keys.add(new Key(i));
-			
 		}
 		//TESTING THE FREQUENCIES
 		
