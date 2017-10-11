@@ -30,67 +30,62 @@ public class Key
 	private double increaseXAmount;
 	private double keyHeight;
 	private Color color;
-	
-	//SOUND SETTINGS
+
+	// SOUND SETTINGS
 	private AudioInputStream stream;
 	private SourceDataLine line;
-	
+
 	private float speed, pitch, rate, volume;
 	private boolean emulateChordPitch;
 	private int quality, sampleRate, numChannels;
 	private Thread playKeyThread;
 	private List<NoteBlock> drawNotesPlayed;
-	
+
 	private URL pathToSound;
 
-	
 	// Run sonic. From https://github.com/waywardgeek/sonic/blob/master/Main.java
-    private static void runSonic(
-        AudioInputStream audioStream,
-        SourceDataLine line,
-        float speed,
-        float pitch,
-        float rate,
-        float volume,
-        boolean emulateChordPitch,
-        int quality,
-        int sampleRate,
-        int numChannels) throws IOException
-    {
-        Sonic sonic = new Sonic(sampleRate, numChannels);
-        int bufferSize = line.getBufferSize();
-        byte inBuffer[] = new byte[bufferSize];
-        byte outBuffer[] = new byte[bufferSize];
-        int numRead, numWritten;
+	private static void runSonic(AudioInputStream audioStream, SourceDataLine line, float speed, float pitch, float rate, float volume, boolean emulateChordPitch, int quality, int sampleRate,
+			int numChannels) throws IOException
+	{
+		Sonic sonic = new Sonic(sampleRate, numChannels);
+		int bufferSize = line.getBufferSize();
+		byte inBuffer[] = new byte[bufferSize];
+		byte outBuffer[] = new byte[bufferSize];
+		int numRead, numWritten;
 
-        sonic.setSpeed(speed);
-        sonic.setPitch(pitch);
-        sonic.setRate(rate);
-        sonic.setVolume(volume);
-        sonic.setChordPitch(emulateChordPitch);
-        sonic.setQuality(quality);
-        do {
-            numRead = audioStream.read(inBuffer, 0, bufferSize);
-            if(numRead <= 0) {
-                sonic.flushStream();
-            } else {
-                sonic.writeBytesToStream(inBuffer, numRead);
-            }
-            do {
-                numWritten = sonic.readBytesFromStream(outBuffer, bufferSize);
-                if(numWritten > 0) {
-                    line.write(outBuffer, 0, numWritten);
-                }
-            } while(numWritten > 0);
-        } while(numRead > 0);
-    }
-	
-	
+		sonic.setSpeed(speed);
+		sonic.setPitch(pitch);
+		sonic.setRate(rate);
+		sonic.setVolume(volume);
+		sonic.setChordPitch(emulateChordPitch);
+		sonic.setQuality(quality);
+		do
+		{
+			numRead = audioStream.read(inBuffer, 0, bufferSize);
+			if (numRead <= 0)
+			{
+				sonic.flushStream();
+			}
+			else
+			{
+				sonic.writeBytesToStream(inBuffer, numRead);
+			}
+			do
+			{
+				numWritten = sonic.readBytesFromStream(outBuffer, bufferSize);
+				if (numWritten > 0)
+				{
+					line.write(outBuffer, 0, numWritten);
+				}
+			} while (numWritten > 0);
+		} while (numRead > 0);
+	}
+
 	public Key(int keyNumber)
 	{
 		this.keyNumber = keyNumber;
 		drawNotesPlayed = new ArrayList<NoteBlock>();
-		//SOUND SETTINGS
+		// SOUND SETTINGS
 		try
 		{
 			this.stream = AudioSystem.getAudioInputStream(this.getClass().getResource("Airhorn.wav"));
@@ -106,126 +101,130 @@ public class Key
 			e.printStackTrace();
 		}
 		this.speed = 1.0f;
-		this.pitch = (float) Math.pow((Math.pow(2, 1.0/12)),(keyNumber+1) - 49) + .2f;
+		this.pitch = (float) Math.pow((Math.pow(2, 1.0 / 12)), (keyNumber + 1) - 49) + .2f;
 		this.rate = 1.0f;
-        this.volume = 1.0f;
-        this.emulateChordPitch = false;
-        this.quality = 0;
-		
+		this.volume = 1.0f;
+		this.emulateChordPitch = false;
+		this.quality = 0;
+
 	}
 
-	public void setPath(URL path) {
+	public void setPath(URL path)
+	{
 		this.pathToSound = path;
 	}
-	
+
 	public boolean isPlaying()
 	{
-		
+
 		return this.playing;
 	}
-	
-	public void setPlaying(boolean playing) {
+
+	public void setPlaying(boolean playing)
+	{
 		this.playing = playing;
 	}
 
 	public void playKey()
 	{
-		
-			drawNotesPlayed.add(new NoteBlock(keyNumber));
 
-			this.playing = true;
-	        
-	        
-    		playKeyThread = new Thread("Play Key") {
-    			public void run() {	        
-		        try {
-	
-				        	stream = AudioSystem.getAudioInputStream(pathToSound);
-				        AudioFormat format = stream.getFormat();
-				        int sampleRate = (int)format.getSampleRate();
-				        int numChannels = format.getChannels(); 
-				        SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, format,
-				        	((int)stream.getFrameLength()*format.getFrameSize()));
-				        SourceDataLine line = (SourceDataLine)AudioSystem.getLine(info);
-				        line.open(stream.getFormat());
-				        
-				        runSonic(stream, line, speed, pitch, rate, volume, emulateChordPitch, quality,
-				            sampleRate, numChannels);
-				        	line.start();
-	
-		        }catch(Exception e) {
-		        		//e.printStackTrace();
-		        		System.out.println("PATH NOT FOUND! " + pathToSound);
-		        }
-    			}
-    		};
-    		
-    		playKeyThread.start();
-			
-	        
+		drawNotesPlayed.add(new NoteBlock(keyNumber));
+
+		this.playing = true;
+
+		playKeyThread = new Thread("Play Key")
+		{
+			public void run()
+			{
+				try
+				{
+
+					stream = AudioSystem.getAudioInputStream(pathToSound);
+					AudioFormat format = stream.getFormat();
+					int sampleRate = (int) format.getSampleRate();
+					int numChannels = format.getChannels();
+					SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, format, ((int) stream.getFrameLength() * format.getFrameSize()));
+					SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+					line.open(stream.getFormat());
+
+					runSonic(stream, line, speed, pitch, rate, volume, emulateChordPitch, quality, sampleRate, numChannels);
+					line.start();
+
+				}
+				catch (Exception e)
+				{
+					// e.printStackTrace();
+					System.out.println("PATH NOT FOUND! " + pathToSound);
+				}
+			}
+		};
+
+		playKeyThread.start();
 
 	}
 
 	public void stopKey()
 	{
-		if(playing == true) {
-			for(int i = 0; i < drawNotesPlayed.size(); i++) {
+		if (playing == true)
+		{
+			for (int i = 0; i < drawNotesPlayed.size(); i++)
+			{
 				NoteBlock currentNote = drawNotesPlayed.get(i);
-				currentNote.setPlaying(false);	
-			}				
+				currentNote.setPlaying(false);
+			}
 			playing = false;
 		}
 	}
-	
-	//GRAPHICS
-	public void draw(Graphics g, double x, double y, double increaseXAmount, double keyHeight, Color color) {
-		
-		
-		
+
+	// GRAPHICS
+	public void draw(Graphics g, double x, double y, double increaseXAmount, double keyHeight, Color color)
+	{
+
 		Graphics2D g2 = (Graphics2D) g;
-	
-		
-		//DRAW NOTES
-		for(int i = 0; i < drawNotesPlayed.size(); i++) {
+
+		// DRAW NOTES
+		for (int i = 0; i < drawNotesPlayed.size(); i++)
+		{
 			boolean flat = false;
-			
-			if(color.equals(Color.BLACK)) {
+
+			if (color.equals(Color.BLACK))
+			{
 				flat = true;
 			}
-			
-			if(drawNotesPlayed.get(i).shouldDraw()) {
-				drawNotesPlayed.get(i).draw(g,x,y,increaseXAmount,flat);
-			}else {
+
+			if (drawNotesPlayed.get(i).shouldDraw())
+			{
+				drawNotesPlayed.get(i).draw(g, x, y, increaseXAmount, flat);
+			}
+			else
+			{
 				drawNotesPlayed.remove(i);
 			}
-			
+
 		}
-		
-		
-		
-		//DRAW KEY
+
+		// DRAW KEY
 		this.x = x;
 		this.y = y;
 		this.increaseXAmount = increaseXAmount;
 		this.keyHeight = keyHeight;
 		this.color = color;
-		
-		//System.out.println(this.keyNumber);
+
+		// System.out.println(this.keyNumber);
 		g2.setColor(this.color);
-		
-		//Do stuff here if key is playing
-		if(isPlaying()) {
+
+		// Do stuff here if key is playing
+		if (isPlaying())
+		{
 			g2.setColor(new Color(30, 183, 235));
 		}
-		
+
 		g2.fill(new Rectangle2D.Double(this.x, this.y, this.increaseXAmount, this.keyHeight));
-		
+
 		g2.setColor(new Color(215, 215, 215));
-		g2.fill(new Rectangle2D.Double(this.x-1, this.y, 1, this.keyHeight));
-		
-		
+		g2.fill(new Rectangle2D.Double(this.x - 1, this.y, 1, this.keyHeight));
+
 	}
-	
 
 	// Getters
 	public int getKeyNumber()

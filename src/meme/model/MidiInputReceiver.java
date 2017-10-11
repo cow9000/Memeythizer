@@ -13,19 +13,19 @@ public class MidiInputReceiver implements Receiver
 
 	private String name;
 	int pressedKeys = 0;
-	
+
 	PianoScreenDisplay piano;
-	
+
 	public MidiInputReceiver(String name, PianoScreenDisplay pianoScreen)
 	{
-		
+
 		piano = pianoScreen;
 		this.name = name;
 
-
 	}
-	
-	public MidiInputReceiver returnThis() {
+
+	public MidiInputReceiver returnThis()
+	{
 		return this;
 	}
 
@@ -35,7 +35,7 @@ public class MidiInputReceiver implements Receiver
 
 		// Get message data
 		Byte keyByte = message.getMessage()[1];
-		//System.out.println(Byte.toString(keyByte));
+		// System.out.println(Byte.toString(keyByte));
 		// Check if message is a valid key press
 		if (message.getLength() > 1)
 		{
@@ -48,11 +48,9 @@ public class MidiInputReceiver implements Receiver
 			else
 			{
 				piano.returnKey(translateKeyType(keyByte)).playKey();
-				
+
 			}
-			
-			
-			
+
 		}
 
 	}
@@ -121,12 +119,11 @@ public class MidiInputReceiver implements Receiver
 
 		keyNum = fullNum - 21;
 
-		
-
 		return keyNum;
 	}
-	
-	public Key returnKey(int i) {
+
+	public Key returnKey(int i)
+	{
 		return piano.returnKey(i);
 	}
 

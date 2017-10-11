@@ -14,11 +14,11 @@ public class MidiHandler
 {
 	MidiDevice device;
 	MidiInputReceiver keyboardReciever;
-	
+
 	public MidiHandler(PianoScreenDisplay pianoScreen)
 	{
 		MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
-		
+
 		for (int i = 0; i < infos.length; i++)
 		{
 			try
@@ -27,15 +27,15 @@ public class MidiHandler
 				List<Transmitter> transmitter = device.getTransmitters();
 				for (int trans = 0; trans < transmitter.size(); trans++)
 				{
-					transmitter.get(trans).setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString(),pianoScreen));
+					transmitter.get(trans).setReceiver(new MidiInputReceiver(device.getDeviceInfo().toString(), pianoScreen));
 				}
 
 				Transmitter keyboardTransmitter = device.getTransmitter();
-				
-				keyboardReciever = new MidiInputReceiver(device.getDeviceInfo().toString(),pianoScreen);
-				
+
+				keyboardReciever = new MidiInputReceiver(device.getDeviceInfo().toString(), pianoScreen);
+
 				keyboardTransmitter.setReceiver(keyboardReciever);
-				
+
 				device.open();
 
 				System.out.println(device.getDeviceInfo() + " - Opened");
@@ -47,15 +47,12 @@ public class MidiHandler
 			}
 
 		}
-		
-		
-		
+
 	}
-	
-	
-	public MidiInputReceiver returnReciever() {
+
+	public MidiInputReceiver returnReciever()
+	{
 		return keyboardReciever;
 	}
-	
 
 }
