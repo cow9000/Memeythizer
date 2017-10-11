@@ -34,10 +34,10 @@ public class Key
 	private AudioInputStream stream;
 	private SourceDataLine line;
 	
-	float speed, pitch, rate, volume;
-	boolean emulateChordPitch;
-	int quality, sampleRate, numChannels;
-	
+	private float speed, pitch, rate, volume;
+	private boolean emulateChordPitch;
+	private int quality, sampleRate, numChannels;
+	private Thread playKeyThread;
 	private List<NoteBlock> drawNotesPlayed;
 
 	
@@ -121,69 +121,38 @@ public class Key
 		this.playing = playing;
 	}
 
-	// FROM http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
-	public AudioFormat getOutFormat(AudioFormat inFormat, int frequency)
-	{	
-		
-		
-		int ch = inFormat.getChannels();
-		float rate = inFormat.getSampleRate();
-		int sampleSize = frequency;
-		//Generating key frequencies
-		sampleSize = (int) Math.round(Math.pow((Math.pow(2, 1.0/12)),(keyNumber+1) - 49) * frequency);
-		System.out.println(sampleSize);
-		return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sampleSize, 16, ch, ch * 2, rate, inFormat.isBigEndian());
-	}
-
 	public void playKey()
 	{
 		
 			drawNotesPlayed.add(new NoteBlock(keyNumber));
 
 			this.playing = true;
-			//System.out.println(isPlaying());
-			// A1 is 440Hz
-	
-			// Follow tutorial http://www.technetexperts.com/web/change-the-pitch-of-audio-using-java-sound-api/
-	
-			// Play sound
-			/*try
-			{
-	
-				audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
-	
-				AudioFormat inFormat = getOutFormat(audioInputStream.getFormat(), 4000);
-	
-				AudioInputStream in2 = AudioSystem.getAudioInputStream(inFormat, audioInputStream);
-	
-				clip = AudioSystem.getClip();
-				System.out.println(clip.getFormat());
-				clip.open(in2);
-				clip.start();
-			}
-			catch (Exception ex)
-			{
-				ex.printStackTrace();
-			}*/
 	        
 	        
-	        
-	        try {
-	        	this.stream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
-	        AudioFormat format = stream.getFormat();
-	        int sampleRate = (int)format.getSampleRate();
-	        int numChannels = format.getChannels(); 
-	        SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, format,
-	        	((int)stream.getFrameLength()*format.getFrameSize()));
-	        SourceDataLine line = (SourceDataLine)AudioSystem.getLine(info);
-	        line.open(stream.getFormat());
-	        
-	        runSonic(stream, line, speed, pitch, rate, volume, emulateChordPitch, quality,
-	            sampleRate, numChannels);
-	        line.start();
-	        }catch(Exception e) {
-	        		e.printStackTrace();
-	        }
+    		playKeyThread = new Thread("Play Key") {
+    			public void run() {	        
+		        try {
+	
+				        	stream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
+				        AudioFormat format = stream.getFormat();
+				        int sampleRate = (int)format.getSampleRate();
+				        int numChannels = format.getChannels(); 
+				        SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, format,
+				        	((int)stream.getFrameLength()*format.getFrameSize()));
+				        SourceDataLine line = (SourceDataLine)AudioSystem.getLine(info);
+				        line.open(stream.getFormat());
+				        
+				        runSonic(stream, line, speed, pitch, rate, volume, emulateChordPitch, quality,
+				            sampleRate, numChannels);
+				        	line.start();
+	
+		        }catch(Exception e) {
+		        		e.printStackTrace();
+		        }
+    			}
+    		};
+    		
+    		playKeyThread.start();
 			
 	        
 
