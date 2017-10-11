@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class Key
 	private int quality, sampleRate, numChannels;
 	private Thread playKeyThread;
 	private List<NoteBlock> drawNotesPlayed;
+	
+	private URL pathToSound;
 
 	
 	// Run sonic. From https://github.com/waywardgeek/sonic/blob/master/Main.java
@@ -90,7 +93,7 @@ public class Key
 		//SOUND SETTINGS
 		try
 		{
-			this.stream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
+			this.stream = AudioSystem.getAudioInputStream(this.getClass().getResource("Airhorn.wav"));
 		}
 		catch (UnsupportedAudioFileException e)
 		{
@@ -111,6 +114,10 @@ public class Key
 		
 	}
 
+	public void setPath(URL path) {
+		this.pathToSound = path;
+	}
+	
 	public boolean isPlaying()
 	{
 		
@@ -133,7 +140,7 @@ public class Key
     			public void run() {	        
 		        try {
 	
-				        	stream = AudioSystem.getAudioInputStream(this.getClass().getResource("greenscreen-wow.wav"));
+				        	stream = AudioSystem.getAudioInputStream(pathToSound);
 				        AudioFormat format = stream.getFormat();
 				        int sampleRate = (int)format.getSampleRate();
 				        int numChannels = format.getChannels(); 
@@ -147,7 +154,8 @@ public class Key
 				        	line.start();
 	
 		        }catch(Exception e) {
-		        		e.printStackTrace();
+		        		//e.printStackTrace();
+		        		System.out.println("PATH NOT FOUND! " + pathToSound);
 		        }
     			}
     		};
@@ -163,18 +171,10 @@ public class Key
 		if(playing == true) {
 			for(int i = 0; i < drawNotesPlayed.size(); i++) {
 				NoteBlock currentNote = drawNotesPlayed.get(i);
-				currentNote.setPlaying(false);
-				
-				
-			}			
-			
+				currentNote.setPlaying(false);	
+			}				
 			playing = false;
-			//line.stop();
-			//line.drain();
 		}
-
-		// Send data to screen that key is released
-
 	}
 	
 	//GRAPHICS

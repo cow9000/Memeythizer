@@ -5,15 +5,22 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import meme.model.Key;
 
@@ -21,21 +28,68 @@ public class PianoScreenDisplay extends JFrame
 {
 
 
-	MouseListener mouseListener;
+	private MouseListener mouseListener;
 
 	private ArrayList<Key> Keys;
 	
 	private static String TITLE = "Memeythizer";
 
-	int testPlayKey = 0;
-	boolean playBack = false;
-	Timer timer = new Timer(); 
+	private int testPlayKey = 0;
+	private boolean playBack = false;
+	private Timer timer = new Timer(); 
+	private URL pathToSound;
+	private CustomComponents cc;
+
+	private void loadSettings() {
+		pathToSound = this.getClass().getResource("Airhorn.wav");
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu soundMenu = new JMenu("Settings");
+		menuBar.add(soundMenu);
+		
+		JMenuItem importSound = new JMenuItem("Import Sound");
+		JMenuItem importMidi = new JMenuItem("Import Midi File");
+		
+		soundMenu.add(importSound);
+		soundMenu.add(importMidi);
+		
+		importSound.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("IMPORT SOUND");
+                final JFileChooser fc = new JFileChooser();
+                
+                int x = fc.showOpenDialog(null);
+                if(x == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fc.getSelectedFile().getAbsolutePath());
+					try
+					{
+						pathToSound = new URL("file:" + fc.getSelectedFile().getAbsolutePath());
+						cc.setUrl(pathToSound);
+					}
+					catch (MalformedURLException e1)
+					{
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                }
+                
+                
+            }
+        });
+		
+		this.mouseListener = new MouseListener();
+
+		this.addMouseListener(mouseListener);
+
+		setTitle(TITLE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 	
 	public PianoScreenDisplay()
 	{	
 		
-		
-		
+		loadSettings();
 		
 		Keys = new ArrayList<Key>();
 		for (int i = 0; i < 88; i++)
@@ -44,6 +98,21 @@ public class PianoScreenDisplay extends JFrame
 			Keys.add(new Key(i));
 			
 		}
+		
+		display();
+
+	}
+
+	public void display()
+	{
+		cc = new CustomComponents(this);
+		add(cc, BorderLayout.CENTER);
+		pack();
+		
+		setMinimumSize(getSize());
+		setSize(getPreferredSize());
+		setVisible(true);
+		
 		//TESTING THE FREQUENCIES
 		
 		timer.schedule( new TimerTask() 
@@ -74,30 +143,14 @@ public class PianoScreenDisplay extends JFrame
 		}, 0, 100);
 		
 		///////////////////////////////////////////////////////////
-		
-		this.mouseListener = new MouseListener();
-
-		this.addMouseListener(mouseListener);
-
-		setTitle(TITLE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		display();
-
-	}
-
-	public void display()
-	{
-		CustomComponents cc = new CustomComponents(this);
-		add(cc, BorderLayout.CENTER);
-		pack();
-
-		setMinimumSize(getSize());
-		setSize(getPreferredSize());
-		setVisible(true);
 	}
 	
 	public Key returnKey(int i) {
 		return Keys.get(i);
+	}
+	
+	public URL returnPath() {
+		return pathToSound;
 	}
 
 }
@@ -113,14 +166,20 @@ class MouseListener extends MouseAdapter
 class CustomComponents extends JComponent
 {
 	private static final long serialVersionUID = 1L;
-
+	private URL pathToSound;
+	
 	PianoScreenDisplay piano;
 	
 	CustomComponents(PianoScreenDisplay piano)
 	{
+		this.pathToSound = this.getClass().getResource("Airhorn.wav");
 		this.piano = piano;
 	}
 	
+	public void setUrl(URL url) {
+		pathToSound = url;
+		System.out.println(pathToSound);
+	}
 	
 
 	@Override
@@ -145,6 +204,9 @@ class CustomComponents extends JComponent
 	//CHANGE T
 	public Key returnKey(int i) {
 		//RETURN KEY HERE NEED TO FETCH FROM MAIN CLASS UP THERE ^^
+		
+		//SET SOUND URL
+		piano.returnKey(i).setPath(pathToSound);
 		return piano.returnKey(i);
 	}
 
@@ -200,7 +262,7 @@ class CustomComponents extends JComponent
 						x = increaseXAmountNormal * (normalKeys);
 
 						// Set color to white then draw
-
+						
 						returnKey(i).draw(g, x, y, increaseXAmountNormal, keyHeight, new Color(255, 255, 255));
 
 						// Update normalKey variable
