@@ -172,6 +172,7 @@ public class Key
 				NoteBlock currentNote = drawNotesPlayed.get(i);
 				currentNote.setPlaying(false);
 			}
+			
 			playing = false;
 		}
 	}

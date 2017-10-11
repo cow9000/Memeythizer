@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -121,12 +122,12 @@ public class PianoScreenDisplay extends JFrame
 		setVisible(true);
 
 		// TESTING THE FREQUENCIES
-
+		
 		timer.schedule(new TimerTask()
 		{
 			public void run()
 			{
-
+				Random rand = new Random();
 				Keys.get(testPlayKey).playKey();
 
 				if (playBack == false)
@@ -148,10 +149,12 @@ public class PianoScreenDisplay extends JFrame
 					if (testPlayKey == 0)
 						playBack = false;
 				}
+				
+			
 
 			}
-		}, 0, 100);
-
+		}, 0, 500);
+		
 		///////////////////////////////////////////////////////////
 	}
 

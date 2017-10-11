@@ -13,7 +13,7 @@ public class Sonic
 	private static final int SONIC_MIN_PITCH = 65;
 	private static final int SONIC_MAX_PITCH = 400;
 	// This is used to down-sample some inputs to improve speed
-	private static final int SONIC_AMDF_FREQ = 2000;
+	private static final int SONIC_AMDF_FREQ = 4000;
 	// The number of points to use in the sinc FIR filter for resampling.
 	private static final int SINC_FILTER_POINTS = 12;
 	private static final int SINC_TABLE_SIZE = 601;
