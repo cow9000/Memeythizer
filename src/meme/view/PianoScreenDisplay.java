@@ -103,7 +103,7 @@ public class PianoScreenDisplay extends JFrame
 		for (int i = 0; i < 88; i++)
 		{
 
-			Keys.add(new Key(i));
+			Keys.add(new Key(i,pathToSound));
 
 		}
 
@@ -127,7 +127,7 @@ public class PianoScreenDisplay extends JFrame
 		{
 			public void run()
 			{
-				Random rand = new Random();
+				
 				Keys.get(testPlayKey).playKey();
 
 				if (playBack == false)
@@ -136,13 +136,13 @@ public class PianoScreenDisplay extends JFrame
 						Keys.get(testPlayKey - 1).stopKey();
 					testPlayKey += 1;
 
-					if (testPlayKey == 87)
+					if (testPlayKey == 86)
 						playBack = true;
 
 				}
 				else
 				{
-					if (testPlayKey != 87)
+					if (testPlayKey != 86)
 						Keys.get(testPlayKey + 1).stopKey();
 					testPlayKey -= 1;
 
@@ -153,7 +153,7 @@ public class PianoScreenDisplay extends JFrame
 			
 
 			}
-		}, 0, 500);
+		}, 0, 2500);
 		
 		///////////////////////////////////////////////////////////
 	}
