@@ -42,7 +42,9 @@ public class Key
 	private List<NoteBlock> drawNotesPlayed;
 
 	private static File tempFile;
-
+	
+	Thread playKeyThread;
+	
 	private URL pathToSound;
 
 	// Run sonic. From https://github.com/waywardgeek/sonic/blob/master/Main.java
@@ -133,6 +135,10 @@ public class Key
 		{
 			e.printStackTrace();
 		}
+		
+		
+		
+		
 
 	}
 
@@ -201,9 +207,13 @@ public class Key
 			this.playing = true;
 
 			// PLAY THE CLIP AND STUFF
+
 			clip.setFramePosition(0);
 			clip.start();
+			
 		}
+		
+		
 
 	}
 
@@ -225,7 +235,7 @@ public class Key
 	// GRAPHICS
 	public void draw(Graphics g, double x, double y, double increaseXAmount, double keyHeight, Color color)
 	{
-		
+		System.out.println();
 		Graphics2D g2 = (Graphics2D) g;
 
 		// DRAW NOTES

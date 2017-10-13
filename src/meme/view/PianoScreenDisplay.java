@@ -122,7 +122,7 @@ public class PianoScreenDisplay extends JFrame
 		setVisible(true);
 
 		// TESTING THE FREQUENCIES
-		
+		/*
 		timer.schedule(new TimerTask()
 		{
 			public void run()
@@ -153,8 +153,8 @@ public class PianoScreenDisplay extends JFrame
 			
 
 			}
-		}, 0, 2500);
-		
+		}, 0, 2000);
+		*/
 		///////////////////////////////////////////////////////////
 	}
 
