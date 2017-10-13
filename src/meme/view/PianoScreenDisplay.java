@@ -7,14 +7,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import meme.model.Key;
@@ -39,8 +40,152 @@ public class PianoScreenDisplay extends JFrame
 	private boolean playBack = false;
 	private Timer timer = new Timer();
 	private URL pathToSound;
+
+	
 	private CustomComponents cc;
 
+	
+	public KeyListener getShortcutKeyListener() {
+	    KeyListener listener = new KeyListener() {
+	    		
+	        @Override
+	        public void keyReleased(KeyEvent evt) {
+	       		if (evt.getKeyCode() == KeyEvent.VK_1 && !evt.isShiftDown()) {
+	                returnKey(0).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_2 && !evt.isShiftDown()) {
+	            		returnKey(2).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_3 && !evt.isShiftDown()) {
+	            		returnKey(3).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_4 && !evt.isShiftDown()) {
+	            		returnKey(5).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_5 && !evt.isShiftDown()) {
+	            		returnKey(7).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_6 && !evt.isShiftDown()) {
+	            		returnKey(8).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_7 && !evt.isShiftDown()) {
+	            		returnKey(10).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_8 && !evt.isShiftDown()) {
+	            		returnKey(12).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_9 && !evt.isShiftDown()) {
+	            		returnKey(14).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_0 && !evt.isShiftDown()) {
+	            		returnKey(15).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_1 && evt.isShiftDown()) {
+	            		returnKey(1).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_2 && evt.isShiftDown()) {
+            			returnKey(4).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_4 && evt.isShiftDown()) {
+        				returnKey(6).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_5 && evt.isShiftDown()) {
+        				returnKey(9).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_6 && evt.isShiftDown()) {
+        				returnKey(11).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_8 && evt.isShiftDown()) {
+        				returnKey(13).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_9 && evt.isShiftDown()) {
+        				returnKey(16).stopKey();
+	            } 
+	        }
+
+	        @Override
+	        public void keyTyped(KeyEvent e) {
+	            // Do nothing
+	        	System.out.println("TYPED");
+	        }
+
+	        @Override
+	        public void keyPressed(KeyEvent evt) {
+	        	
+	        		//TOP ROW 1 to 0
+	            if (evt.getKeyCode() == KeyEvent.VK_1 && !evt.isShiftDown()) {
+	                returnKey(0).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_2 && !evt.isShiftDown()) {
+	            		returnKey(2).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_3 && !evt.isShiftDown()) {
+	            		returnKey(3).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_4 && !evt.isShiftDown()) {
+	            		returnKey(5).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_5 && !evt.isShiftDown()) {
+	            		returnKey(7).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_6 && !evt.isShiftDown()) {
+	            		returnKey(8).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_7 && !evt.isShiftDown()) {
+	            		returnKey(10).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_8 && !evt.isShiftDown()) {
+	            		returnKey(12).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_9 && !evt.isShiftDown()) {
+	            		returnKey(14).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_0 && !evt.isShiftDown()) {
+	            		returnKey(15).playKey();
+	            }
+	            //SHIFTED
+	            else if(evt.getKeyCode() == KeyEvent.VK_1 && evt.isShiftDown()) {
+	            		returnKey(1).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_2 && evt.isShiftDown()) {
+            			returnKey(4).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_4 && evt.isShiftDown()) {
+        				returnKey(6).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_5 && evt.isShiftDown()) {
+        				returnKey(9).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_6 && evt.isShiftDown()) {
+        				returnKey(11).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_8 && evt.isShiftDown()) {
+        				returnKey(13).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_9 && evt.isShiftDown()) {
+        				returnKey(16).playKey();
+	            }
+	            ///////
+	            
+	            
+	            //SECOND ROW q to p
+	            else if(evt.getKeyCode() == KeyEvent.VK_Q && !evt.isShiftDown()) {
+    					returnKey(17).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_W && !evt.isShiftDown()) {
+    					returnKey(19).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_E && !evt.isShiftDown()) {
+    					returnKey(20).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_R && !evt.isShiftDown()) {
+    					returnKey(22).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_T && !evt.isShiftDown()) {
+    					returnKey(24).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_Y && !evt.isShiftDown()) {
+    					returnKey(26).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_U && !evt.isShiftDown()) {
+    					returnKey(27).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_I && !evt.isShiftDown()) {
+    					returnKey(29).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_O && !evt.isShiftDown()) {
+    					returnKey(31).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_P && !evt.isShiftDown()) {
+    					returnKey(32).playKey();
+	            }
+	            //SHIFTED
+	            else if(evt.getKeyCode() == KeyEvent.VK_Q && evt.isShiftDown()) {
+    					returnKey(16).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_W && evt.isShiftDown()) {
+    					returnKey(16).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_E && evt.isShiftDown()) {
+    					returnKey(16).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_T && evt.isShiftDown()) {
+    					returnKey(16).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_Y && evt.isShiftDown()) {
+    					returnKey(16).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_I && evt.isShiftDown()) {
+    					returnKey(16).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_O && evt.isShiftDown()) {
+    					returnKey(16).playKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_P && evt.isShiftDown()) {
+    					returnKey(16).playKey();
+	            }
+	            	/////////
+	            
+	        }
+	    };
+	    return listener;
+	}
+	
+	
+	
 	private void loadSettings()
 	{
 		pathToSound = this.getClass().getResource("Airhorn.wav");
@@ -89,7 +234,7 @@ public class PianoScreenDisplay extends JFrame
 		this.mouseListener = new MouseListener();
 
 		this.addMouseListener(mouseListener);
-
+		this.addKeyListener(getShortcutKeyListener());
 		setTitle(TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -178,18 +323,28 @@ class MouseListener extends MouseAdapter
 	}
 }
 
+
+
+
 class CustomComponents extends JComponent
 {
 	private static final long serialVersionUID = 1L;
 	private URL pathToSound;
 
 	PianoScreenDisplay piano;
+	
+	
 
+	
 	CustomComponents(PianoScreenDisplay piano)
 	{
 		this.pathToSound = this.getClass().getResource("Airhorn.wav");
 		this.piano = piano;
+		
 	}
+	
+	
+	
 
 	public void setUrl(URL url)
 	{
@@ -228,7 +383,7 @@ class CustomComponents extends JComponent
 	@Override
 	public void paintComponent(Graphics g)
 	{
-
+		
 		Graphics2D g2 = (Graphics2D) g;
 		super.paintComponent(g);
 		Dimension windowSize = getSize();
