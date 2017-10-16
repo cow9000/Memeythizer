@@ -40,17 +40,18 @@ public class PianoScreenDisplay extends JFrame
 	private boolean playBack = false;
 	private Timer timer = new Timer();
 	private URL pathToSound;
-
+	private KeyListener listener;
 	
 	private CustomComponents cc;
 
 	
 	public KeyListener getShortcutKeyListener() {
-	    KeyListener listener = new KeyListener() {
+	    listener = new KeyListener() {
 	    		
 	        @Override
 	        public void keyReleased(KeyEvent evt) {
-	       		if (evt.getKeyCode() == KeyEvent.VK_1 && !evt.isShiftDown()) {
+        		//TOP ROW 1 to 0
+	            if (evt.getKeyCode() == KeyEvent.VK_1 && !evt.isShiftDown()) {
 	                returnKey(0).stopKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_2 && !evt.isShiftDown()) {
 	            		returnKey(2).stopKey();
@@ -70,7 +71,9 @@ public class PianoScreenDisplay extends JFrame
 	            		returnKey(14).stopKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_0 && !evt.isShiftDown()) {
 	            		returnKey(15).stopKey();
-	            }else if(evt.getKeyCode() == KeyEvent.VK_1 && evt.isShiftDown()) {
+	            }
+	            //SHIFTED
+	            else if(evt.getKeyCode() == KeyEvent.VK_1 && evt.isShiftDown()) {
 	            		returnKey(1).stopKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_2 && evt.isShiftDown()) {
             			returnKey(4).stopKey();
@@ -84,7 +87,53 @@ public class PianoScreenDisplay extends JFrame
         				returnKey(13).stopKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_9 && evt.isShiftDown()) {
         				returnKey(16).stopKey();
-	            } 
+	            }
+	            ///////
+	            
+	            
+	            //SECOND ROW q to p
+	            else if(evt.getKeyCode() == KeyEvent.VK_Q && !evt.isShiftDown()) {
+    					returnKey(17).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_W && !evt.isShiftDown()) {
+    					returnKey(19).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_E && !evt.isShiftDown()) {
+    					returnKey(20).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_R && !evt.isShiftDown()) {
+    					returnKey(22).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_T && !evt.isShiftDown()) {
+    					returnKey(24).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_Y && !evt.isShiftDown()) {
+    					returnKey(26).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_U && !evt.isShiftDown()) {
+    					returnKey(27).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_I && !evt.isShiftDown()) {
+    					returnKey(29).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_O && !evt.isShiftDown()) {
+    					returnKey(31).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_P && !evt.isShiftDown()) {
+    					returnKey(32).stopKey();
+	            }
+	            //SHIFTED
+	            if(evt.getKeyCode() == KeyEvent.VK_Q && evt.isShiftDown()) {
+    					returnKey(16).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_W && evt.isShiftDown()) {
+    					returnKey(19).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_E && evt.isShiftDown()) {
+    					returnKey(21).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_T && evt.isShiftDown()) {
+    					returnKey(24).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_Y && evt.isShiftDown()) {
+    					returnKey(26).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_I && evt.isShiftDown()) {
+    					returnKey(28).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_O && evt.isShiftDown()) {
+    					returnKey(30).stopKey();
+	            }else if(evt.getKeyCode() == KeyEvent.VK_P && evt.isShiftDown()) {
+    					returnKey(33).stopKey();
+	            }else {
+	            		returnKey(1).stopKey();
+	            }
+	            	/////////
 	        }
 
 	        @Override
@@ -163,19 +212,21 @@ public class PianoScreenDisplay extends JFrame
 	            else if(evt.getKeyCode() == KeyEvent.VK_Q && evt.isShiftDown()) {
     					returnKey(16).playKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_W && evt.isShiftDown()) {
-    					returnKey(16).playKey();
+    					returnKey(19).playKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_E && evt.isShiftDown()) {
-    					returnKey(16).playKey();
+    					returnKey(21).playKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_T && evt.isShiftDown()) {
-    					returnKey(16).playKey();
+    					returnKey(24).playKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_Y && evt.isShiftDown()) {
-    					returnKey(16).playKey();
+    					returnKey(26).playKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_I && evt.isShiftDown()) {
-    					returnKey(16).playKey();
+    					returnKey(28).playKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_O && evt.isShiftDown()) {
-    					returnKey(16).playKey();
+    					returnKey(30).playKey();
 	            }else if(evt.getKeyCode() == KeyEvent.VK_P && evt.isShiftDown()) {
-    					returnKey(16).playKey();
+    					returnKey(33).playKey();
+	            }else {
+            			returnKey(1).playKey();
 	            }
 	            	/////////
 	            
@@ -232,9 +283,9 @@ public class PianoScreenDisplay extends JFrame
 		});
 
 		this.mouseListener = new MouseListener();
-
+		getShortcutKeyListener();
 		this.addMouseListener(mouseListener);
-		this.addKeyListener(getShortcutKeyListener());
+		this.addKeyListener(listener);
 		setTitle(TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -266,41 +317,7 @@ public class PianoScreenDisplay extends JFrame
 		setSize(getPreferredSize());
 		setVisible(true);
 
-		// TESTING THE FREQUENCIES
-		/*
-		timer.schedule(new TimerTask()
-		{
-			public void run()
-			{
-				
-				Keys.get(testPlayKey).playKey();
-
-				if (playBack == false)
-				{
-					if (testPlayKey != 0)
-						Keys.get(testPlayKey - 1).stopKey();
-					testPlayKey += 1;
-
-					if (testPlayKey == 86)
-						playBack = true;
-
-				}
-				else
-				{
-					if (testPlayKey != 86)
-						Keys.get(testPlayKey + 1).stopKey();
-					testPlayKey -= 1;
-
-					if (testPlayKey == 0)
-						playBack = false;
-				}
-				
-			
-
-			}
-		}, 0, 2000);
-		*/
-		///////////////////////////////////////////////////////////
+		
 	}
 
 	public Key returnKey(int i)

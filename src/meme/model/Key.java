@@ -97,7 +97,7 @@ public class Key
 		drawNotesPlayed = new ArrayList<NoteBlock>();
 		// SOUND SETTINGS
 		this.speed = 1.0f;
-		this.pitch = (float) Math.pow((Math.pow(2, 1.0 / 12)), (keyNumber + 1) - 49) + .2f;
+		this.pitch = (float) Math.pow((Math.pow(2, 1.0 / 12)), (keyNumber + 1) - 49);
 		this.rate = 1.0f;
 		this.volume = 1.0f;
 		this.emulateChordPitch = false;
@@ -219,7 +219,7 @@ public class Key
 
 	public void stopKey()
 	{
-		if (playing == true)
+		if (isPlaying())
 		{
 			for (int i = 0; i < drawNotesPlayed.size(); i++)
 			{
@@ -228,7 +228,7 @@ public class Key
 			}
 
 			playing = false;
-			clip.stop();
+			if(clip.isRunning()) clip.stop();
 		}
 	}
 
